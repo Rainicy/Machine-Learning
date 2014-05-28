@@ -9,7 +9,7 @@ from util import RMSE
 
 def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	'''
-	Description: This algorithms represents the Linear Batch Gradient Descent algorithm.
+	Description: This algorithms represents the Linear Stochastic Gradient Descent algorithm.
 
 	@param:
 		X: training features
@@ -30,7 +30,8 @@ def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	hypothese = np.dot(X, theta)
 	rmse = RMSE(hypothese, y)
 	rmse_ = np.inf
-	xTrans = np.transpose(X)
+
+	# stop looping condition
 	while abs(rmse - rmse_) > threshold:
 		loop += 1
 		if loop == 1:
@@ -38,16 +39,13 @@ def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 		else:
 			rmse_ = rmse
 
-		# updating theta by each data sample
-		for i in range(0, m):
-			hypothese = np.dot(X[i], theta)
-			theta = theta + alpha * (y[i] - hypothese) * X[i]
-
 		hypothese = np.dot(X, theta)
 		rmse = RMSE(hypothese, y)
 		print 'Iteration: %d | RMSE: %f' % (loop, rmse)
 
-		# updating parameters
-		# theta = theta + alpha * np.dot(xTrans, (y - hypothese))
+		# updating theta by each data sample
+		for i in range(0, m):
+			hypothese = np.dot(X[i], theta)
+			theta = theta + alpha * (y[i] - hypothese) * X[i]
 
 	return theta
