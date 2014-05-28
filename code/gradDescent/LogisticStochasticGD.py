@@ -1,15 +1,18 @@
 '''
-Created May 27, 2014
+Created on May 28, 2014
 
 @author Rainicy
 '''
 
 import numpy as np
+
+from LogisticBatchGD import logistic
 from util import RMSE
 
-def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
+		
+def LogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	'''
-	Description: This algorithms represents the Linear Stochastic Gradient Descent algorithm.
+	Description: This algorithms represents the Logistic Stochastic Gradient Descent algorithm.
 
 	@param:
 		X: training features
@@ -27,9 +30,10 @@ def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	loop = 0
 
 	# initialize the RMSE for terminating the loop
-	hypothese = np.dot(X, theta)
+	hypothese = logistic(np.dot(X, theta))
 	rmse = RMSE(hypothese, y)
 	rmse_ = np.inf
+	xTrans = np.transpose(X)
 
 	# stop looping condition
 	while abs(rmse - rmse_) > threshold:
@@ -39,13 +43,14 @@ def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 		else:
 			rmse_ = rmse
 
-		hypothese = np.dot(X, theta)
+		# hypothese = logistic(theta.T * X)
+		hypothese = logistic(np.dot(X, theta))
 		rmse = RMSE(hypothese, y)
 		print 'Iteration: %d | RMSE: %f' % (loop, rmse)
 
-		# updating theta by each data sample
+		# updating parameters by each sample
 		for i in range(0, m):
-			# hypothese = np.dot(X[i], theta)
+			# hypothese = logistic(X[i] * theta)
 			theta = theta + alpha * (y[i] - hypothese[i]) * X[i]
 
 	return theta

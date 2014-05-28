@@ -9,6 +9,7 @@ import numpy as np
 from LinearBatchGD import LinearBatchGD
 from LinearStochasticGD import LinearStochasticGD
 from LogisticBatchGD import *
+from LogisticStochasticGD import LogisticStochasticGD
 from util import RMSE, initialData
 
 
@@ -23,11 +24,12 @@ def main():
 	trainX, trainY, testX, testY = initialData(data)
 
 	# Part 2: Training the theta model by Batch Gradient Descent
-	alpha = 5e-5
-	threshold = 1e-10
+	alpha = 5e-4
+	threshold = 1e-5
 	# theta = LinearBatchGD(trainX, trainY, alpha, threshold)
 	# theta = LinearStochasticGD(trainX, trainY, alpha, threshold)
-	theta = LogisticBatchGD(trainX, trainY, alpha, threshold)
+	# theta = LogisticBatchGD(trainX, trainY, alpha, threshold)
+	theta = LogisticStochasticGD(trainX, trainY, alpha, threshold)
 
 	# Part 3: Testing data 
 	predictTrain = logistic(np.dot(trainX, theta))
@@ -39,6 +41,9 @@ def main():
 	print "RMSE for Training Data: %f" % rmseTrain
 	print "RMSE for Testing Data: %f " % rmseTest
 
+	# testing for logistic function
+	predictTrain = logistic(np.dot(trainX, theta))
+	predictTest = logistic(np.dot(testX, theta))
 	trainER = np.sum((predictTrain > .5) != trainY) / float(trainY.size)
 	testER = np.sum((predictTest > .5) != testY) / float(testY.size)
 	print "Error Rate: %f" % trainER

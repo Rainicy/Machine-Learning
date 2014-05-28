@@ -1,10 +1,11 @@
 '''
-Created on May 27, 2014
+Created on May 28, 2014
 
 @author Rainicy
 '''
 
 import numpy as np
+
 from util import RMSE
 
 def logistic(n):
@@ -23,7 +24,7 @@ def logistic(n):
 		
 def LogisticBatchGD(X, y, alpha=5e-5, threshold=1e-3):
 	'''
-	Description: This algorithms represents the Logic Batch Gradient Descent algorithm.
+	Description: This algorithms represents the Logistic Batch Gradient Descent algorithm.
 
 	@param:
 		X: training features
