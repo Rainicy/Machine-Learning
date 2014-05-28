@@ -111,6 +111,7 @@ def BatchGD(X, y, alpha=5e-5, threshold=1e-3):
 
 def main():
 
+	# For testing
 	np.set_printoptions(threshold='nan')
 
 	# Part 1: Prepare for the data for training and testing
