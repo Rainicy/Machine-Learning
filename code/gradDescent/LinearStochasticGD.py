@@ -1,15 +1,15 @@
 '''
-Created on May 27, 2014
+Created May 27, 2014
 
 @author Rainicy
 '''
 
 import numpy as np
 from util import RMSE
-		
-def LinearBatchGD(X, y, alpha=5e-5, threshold=1e-3):
+
+def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	'''
-	Description: This algorithms represents the LinearBatch Gradient Descent algorithm.
+	Description: This algorithms represents the Linear Batch Gradient Descent algorithm.
 
 	@param:
 		X: training features
@@ -37,11 +37,17 @@ def LinearBatchGD(X, y, alpha=5e-5, threshold=1e-3):
 			rmse_ = np.inf
 		else:
 			rmse_ = rmse
+
+		# updating theta by each data sample
+		for i in range(0, m):
+			hypothese = np.dot(X[i], theta)
+			theta = theta + alpha * (y[i] - hypothese) * X[i]
+
 		hypothese = np.dot(X, theta)
 		rmse = RMSE(hypothese, y)
 		print 'Iteration: %d | RMSE: %f' % (loop, rmse)
 
 		# updating parameters
-		theta = theta + alpha * np.dot(xTrans, (y - hypothese))
+		# theta = theta + alpha * np.dot(xTrans, (y - hypothese))
 
 	return theta
