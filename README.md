@@ -8,6 +8,7 @@ This is the study notes on [Machine Learning class in Stanford](http://cs229.sta
 * Linear Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- Linear Batch Gradient Descent
 	- Linear Stochastic Gradient Descent
+	- Linear Normal Equations
 
 * Logistic Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- Logistic Batch Gradient Descent
