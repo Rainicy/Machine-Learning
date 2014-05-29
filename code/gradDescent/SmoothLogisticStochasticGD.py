@@ -7,7 +7,7 @@ Created on May 28, 2014
 import numpy as np
 
 from LogisticBatchGD import logistic
-from util import RMSE
+from ..util import RMSE
 
 		
 def SmoothLogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
@@ -53,7 +53,7 @@ def SmoothLogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 		dataIndex = range(m)
 		# updating parameters by each sample
 		for i in range(0, m):
-			alpha = 0.1 / (1.0 + loop + i) + 0.01
+			alpha = 0.1 / (1.0 + loop + i) + 0.001
 			# random choose the sample 
 			randIndex = int(np.random.uniform(0, len(dataIndex)))
 			h = logistic(np.sum(X[randIndex] * theta))
