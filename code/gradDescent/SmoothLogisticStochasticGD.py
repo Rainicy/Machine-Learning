@@ -10,9 +10,11 @@ from LogisticBatchGD import logistic
 from util import RMSE
 
 		
-def LogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
+def SmoothLogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	'''
-	Description: This algorithms represents the Logistic Stochastic Gradient Descent algorithm.
+	Description: This algorithms represents the Smooth Logistic Stochastic Gradient Descent algorithm.
+				More details about Smooth Stochastic GD see the link:
+				http://blog.csdn.net/zouxy09/article/details/20319673
 
 	@param:
 		X: training features
@@ -48,9 +50,15 @@ def LogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 		rmse = RMSE(hypothese, y)
 		print 'Iteration: %d | RMSE: %f' % (loop, rmse)
 
+		dataIndex = range(m)
 		# updating parameters by each sample
 		for i in range(0, m):
-			h = logistic(np.sum(X[i] * theta))
-			theta = theta + alpha * (y[i] - h) * X[i]
+			alpha = 0.1 / (1.0 + loop + i) + 0.01
+			# random choose the sample 
+			randIndex = int(np.random.uniform(0, len(dataIndex)))
+			h = logistic(np.sum(X[randIndex] * theta))
+			theta = theta + alpha * (y[randIndex] - h) * X[randIndex]
+			# remove the sample already used
+			del(dataIndex[randIndex])
 
 	return theta

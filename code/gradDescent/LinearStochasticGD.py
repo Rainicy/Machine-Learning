@@ -45,7 +45,7 @@ def LinearStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 
 		# updating theta by each data sample
 		for i in range(0, m):
-			# hypothese = np.dot(X[i], theta)
-			theta = theta + alpha * (y[i] - hypothese[i]) * X[i]
+			h = np.dot(X[i], theta)
+			theta = theta + alpha * (y[i] - h) * X[i]
 
 	return theta
