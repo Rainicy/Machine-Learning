@@ -9,6 +9,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 	- Linear Batch Gradient Descent
 	- Linear Stochastic Gradient Descent
 	- Linear Normal Equations
+	- Locally Weighted Linear Regression ([Ref: <Machine Learning in Action> Chapter 8](http://www.manning.com/pharrington/))
 
 * Logistic Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- Logistic Batch Gradient Descent
@@ -16,3 +17,4 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
     - Smooth Stochastic Gradient Descent ([Ref: <Machine Learning in Action>(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
 
 * Perceptron Algorithm ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
+
