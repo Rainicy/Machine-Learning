@@ -13,4 +13,6 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 * Logistic Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- Logistic Batch Gradient Descent
 	- Logistic Stochastic Gradient Descent
-    - Smooth Stochastic Gradient Descent ([Ref: Machine Learning in Action(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
+    - Smooth Stochastic Gradient Descent ([Ref: <Machine Learning in Action>(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
+
+* Perceptron Algorithm ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))

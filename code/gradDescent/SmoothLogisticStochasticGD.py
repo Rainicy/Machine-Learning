@@ -7,7 +7,7 @@ Created on May 28, 2014
 import numpy as np
 
 from LogisticBatchGD import logistic
-from ..util import RMSE
+from util import RMSE
 
 		
 def SmoothLogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
