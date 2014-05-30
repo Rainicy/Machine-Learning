@@ -1,6 +1,6 @@
 # Machine-Learning
 
-This is the study notes on [Machine Learning class in Stanford](http://cs229.stanford.edu/). Use Python to implement the basic ML algorithms.
+This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs229.stanford.edu/). I also refer the materials from the class [CS6140 in Northeastern University](http://www.ccs.neu.edu/home/vip/teach/MLcourse/) to help me implement algorithms.
 
 ## Algorithms
 
