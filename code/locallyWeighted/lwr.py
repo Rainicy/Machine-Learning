@@ -4,7 +4,7 @@ Created on May 30, 2014,
 @author Rainicy
 '''
 
-import numpy as py
+import numpy as np
 
 def gaussianKernel(xi, x, k, c=1.0):
 	'''
@@ -22,7 +22,7 @@ def gaussianKernel(xi, x, k, c=1.0):
 	'''
 	diff = xi - x
 	product = diff * diff.T
-	return c * np.exp(product / (-2 * k ** 2))
+	return c * np.exp(product / (-2.0 * k ** 2))
 
 def lwr(trainX, trainY, testX, k=1.0):
 	'''
@@ -37,6 +37,8 @@ def lwr(trainX, trainY, testX, k=1.0):
 		y: predict value by the given test sample
 	'''
 
+	trainX = np.mat(trainX)
+	trainY = np.mat(trainY).T
 	# m: #samples, n:#features
 	m, n = np.shape(trainX)
 
@@ -44,12 +46,19 @@ def lwr(trainX, trainY, testX, k=1.0):
 	weights = np.mat(np.eye(m))
 	# update weights 
 	for i in range(m):
-		weights[i, i] = gaussianKernel(trainX[i], testX, k)
+		weights[i, i] = gaussianKernel(trainX[i, :], testX, k)
+		print weights[i, i]
 
 	# get the theta 
 	# the rules in note page 3-4
-	xTx = np.dot(np.dot(np.transpose(trainX), weights), trainX)
+	xTx = trainX.T * (weights * trainX)
 	if np.linalg.det(xTx) == 0.0:
 		print "This matrix is singular, non-invertible"
 		return 
+
+	# calculate theta 
+	theta = xTx.I * (trainX.T * (weights * trainY))
+
+	# return predict test point value
+	return testX * theta
 	
