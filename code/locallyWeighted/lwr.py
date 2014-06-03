@@ -20,11 +20,11 @@ def gaussianKernel(xi, x, k, c=1.0):
 	@return:
 		w: the weight on the position ith in the training datas set. 
 	'''
-	diff = xi - x
+	diff = x - xi
 	product = diff * diff.T
-	return c * np.exp(product / (-2.0 * k ** 2))
+	return c * np.exp(product / (-2.0 * (k ** 2)))
 
-def lwr(trainX, trainY, testX, k=1.0):
+def lwr(trainX1, trainY1, testX, k=1.0):
 	'''
 	Description: Predict a test sample, by fitting local weighted regression.
 
@@ -37,8 +37,8 @@ def lwr(trainX, trainY, testX, k=1.0):
 		y: predict value by the given test sample
 	'''
 
-	trainX = np.mat(trainX)
-	trainY = np.mat(trainY).T
+	trainX = np.mat(trainX1)
+	trainY = np.mat(trainY1).T
 	# m: #samples, n:#features
 	m, n = np.shape(trainX)
 
@@ -47,14 +47,13 @@ def lwr(trainX, trainY, testX, k=1.0):
 	# update weights 
 	for i in range(m):
 		weights[i, i] = gaussianKernel(trainX[i, :], testX, k)
-		print weights[i, i]
 
 	# get the theta 
 	# the rules in note page 3-4
 	xTx = trainX.T * (weights * trainX)
-	if np.linalg.det(xTx) == 0.0:
-		print "This matrix is singular, non-invertible"
-		return 
+	# if np.linalg.det(xTx) == 0.0:
+	# 	print "This matrix is singular, non-invertible"
+	# 	return 
 
 	# calculate theta 
 	theta = xTx.I * (trainX.T * (weights * trainY))
