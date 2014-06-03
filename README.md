@@ -15,6 +15,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 	- Logistic Batch Gradient Descent
 	- Logistic Stochastic Gradient Descent
     - Smooth Stochastic Gradient Descent ([Ref: <Machine Learning in Action>(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
+    - Newton-Raphson
 
 * Perceptron Algorithm ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 
