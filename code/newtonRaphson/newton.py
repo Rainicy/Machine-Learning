@@ -71,11 +71,11 @@ def newton(X, y, threshold=1e-4):
 
 		# calculate (-X.T*W*X).inv
 		xTWx = - X.T * innerProduct * X
-		xTWxInv = np.linalg.inv(xTWx)
+
 		# X.T * (y - h)
 		xY = X.T * (Y - hypothese)
 
 		# update theta
-		theta = theta - xTWxInv * xY
+		theta = theta - xTWx.I * xY
 
 	return theta
