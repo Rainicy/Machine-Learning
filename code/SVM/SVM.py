@@ -72,6 +72,61 @@ def calEk(svm, k):
 	error = hypothese - float(svm.y[k])
 	return error
 
+def updateEk(svm, k):
+	'''
+	Description: Update the error cache for alpha_k after optimize alpha_k
+
+	@param:
+		svm: SVM struct
+		k: the update for sample index k
+	'''
+	error = calEk(svm, k)
+	svm.errorCache[k] = [1, error]
+
+def selectJ(svm, i, Ei):
+	'''
+	Description: Select alpha_j by Max(E(i) - E(j)).
+
+	@param:
+		svm: the SVM struct
+		i: the alpha_i index
+		Ei: the error by alpha_i
+	@return
+		j: the alpha_j index
+		Ej: the error by alpha_j
+	'''
+
+	# we want to choose the alpha_j, which satisfies Max(|E(i) - E(j)|)
+	## But we just find alpha_j from non-bound examples in training set
+	# set Ei in Error Cache valid
+	svm.errorCache[i] = [1, Ei]
+	## find all the non-bound candidates for j
+	validErrorCacheList = nonzero(svm.errorCache[:,0].A)[0]
+
+	maxDelta = 0
+	j = -1
+	Ej = 0
+
+	# find the j make the maximum gap
+	if len(validErrorCacheList) > 1:
+		for k in validErrorCacheList:
+			if k == i:
+				continue
+			else:
+				Ek = calEk(svm, k)
+				delta = abs(Ei-Ek)
+				if delta > maxDelta:
+					Ej = Ek
+					j = k
+					maxDelta = delta
+	# the first round random choose j
+	else:
+		j = i
+		while (j==i):
+			j = int(random.uniform(0, svm.m))
+		Ej = calEk(svm, j)
+
+	return j, Ej
 
 def innerLoop(svm, i):
 	'''
@@ -87,7 +142,92 @@ def innerLoop(svm, i):
 
 	'''
 	# calculate the Error: Ek = f(x(k))- y(k)
-	calEk(svm, i)
+	Ei = calEk(svm, i)
+
+	# By given i, let's check if the point violats the KKT conditions
+	## First, satisfy KKT conditions:
+	###		1) alpha_i = 0 & y_i * f(x_i) >= 1	(outside the boundary)
+	###		2) alpha_i = C & y_i * f(x_i) <= 1	(between the boundary)
+	###		3) 0<alpha_i<C & y_i * f(x_i) =  1	(on the boundary)
+	## Second, violate KKT conditions: 
+	####	y(i)E(i) = y(i)(f(x_i) - y(i)) = y(i) * f(x_i) - 1
+	####	===> y(i)E(i) >= 0 equal to 1)
+	####	===> y(i)E(i) <= 0 equal to 2)
+	####	===> y(i)E(i) =  0 equal to 3)
+	###		1) y(i)E(i) > 0 & (alpha_i != 0 <==> alpha_i > 0)
+	###		2) y(i)E(i) < 0 & (alpha_i != C <==> alpha_i < C)
+	###		3) y(i)E(i) = 0 & (it's on the boundary, needless optimized)
+	# So just consider the violated conditions 1) & 2)
+	if ((svm.y[i] * Ei > svm.toler) and (svm.alphas[i] > 0)) or 
+		((svm.y[i] * Ei < -svm.toler) and (svm.alphas[i] < C)):
+
+		# Step 1: select alpha_j
+
+		j, Ej = selectJ(svm, i, Ei)
+		alpha_i_old = svm.alphas[i].copy()
+		alpha_j_old = svm.alphas[j].copy()
+
+		# Step 2: calculate H & L for j
+
+		# if y(i) != y(j)
+		## 1) L = Max(0, alpha_j - alpha_i)
+		## 2) H = Min(C, alpha_j - alpha_i + C)
+		# if y(i) == y(j)
+		## 1) L = Max(0, alpha_i + alpha_j - C)
+		## 2) H = Min(C, alpha_i + alpha_j)
+		if svm.y[i] != svm.y[j]:
+			L = max(0, svm.alphas[j] - svm.alphas[i])
+			H = min(svm.C, svm.alphas[j] - svm.alphas[i] + svm.C)
+		else:
+			L = max(0, svm.alphas[i] + svm.alphas[j] - svm.C)
+			H = min(svm.C, svm.alphas[i] + svm.alphas[j])
+		# needless optimize
+		if L == H:
+			return 0
+
+		# Step 3: calculate eta = K(x_i, x_i) + K(x_j, x_j) - 2*K(xi, xj)
+		eta = svm.K[i, i] + svm.K[j, j] - 2*svm.K[i,j]
+		# eta means the similarity of sample i and j 
+		## eta cannot be smaller than 0, it's because:
+		## eta = ||phi(x_1) - phi(x_2)||**2
+		if eta<=0:
+			return 0
+
+		# Step 4: update alpha j
+		svm.alphas[j] = alpha_j_old + svm.y[j] * (Ei - Ej) / eta
+
+		# Step 5: clip alpha j
+		if svm.alphas[j] < L:
+			svm.alphas[j] = L
+		elif svm.alphas[j] > H:
+			svm.alphas[j] = H
+
+		# update the Ej in errorCache
+		updateEk(svm, j)
+
+		# Step 6: if j not moving enough, return 0
+		if abs(alpha_j_old - svm.alphas[j]) < 0.00001:
+			return 0
+
+		# Step 7: update alpha i
+		svm.alphas[i] = alpha_i_old + svm.y[i] * svm.y[j] * (alpha_j_old - svm.alphas[j])
+
+		# Step 8: update b
+		bi = svm.b - Ei + (alpha_i_old-svm.alphas[i])*svm.y[i]*svm.K[i,i] + (alpha_j_old-svm.alphas[j])*svm.y[j]*svm.K[j,i]
+		bj = svm.b - Ej + (alpha_i_old-svm.alphas[i])*svm.y[i]*svm.K[i,i] + (alpha_j_old-svm.alphas[j])*svm.y[j]*svm.K[j,i]
+
+		if (svm.alphas[i]>0) and (svm.alphas[i]<svm.C):
+			svm.b = bi
+		elif (svm.alphas[j]>0) and (svm.alphas[j]<svm.C):
+			svm.b = bj
+		else:
+			svm.b = (bi + bj) / 2.0
+
+		# finnally change one pair alphas
+		return 1
+		
+	else:
+		return 0
 
 
 
