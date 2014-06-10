@@ -4,9 +4,11 @@ Created on June 9, 2014
 @author: Rainicy
 
 @ref: http://www.manning.com/pharrington/
+	  http://blog.csdn.net/zouxy09/article/details/17292011
 '''
 
 from numpy import *
+import matplotlib.pyplot as plt
 import time
 
 def calKernel(X, x, kernel):
@@ -24,7 +26,7 @@ def calKernel(X, x, kernel):
 	K = mat(zeros((m, 1)))
 	if kernel[0] == 'linear':	# linear kernel
 		K = X * x.T 	# K[m, 1] = X[m, n] * x.T[n, 1]
-	else if kernel[0] == 'rbf':	# gaussian kernel
+	elif kernel[0] == 'rbf':	# gaussian kernel
 		sigma = kernel[1]
 		if sigma == 0:
 			sigma = 1
@@ -51,9 +53,10 @@ class SVMStruct:
 		self.alphas = mat(zeros((self.m, 1)))
 		self.b = 0
 		self.errorCache = mat(zeros((self.m, 2)))
+		self.kernel = kernel
 		self.K = mat(zeros((self.m, self.m)))
 		for i in range(self.m):	# initialize the kernel matrix
-			self.K[:, i] = calKernel(self.X, self.x[i, :], kernel)
+			self.K[:, i] = calKernel(self.X, self.X[i, :], kernel)
 
 
 def calEk(svm, k):
@@ -68,7 +71,7 @@ def calEk(svm, k):
 	@return:
 		error: f(x(k)) - y(k) [hypothese(k) - y(k)]
 	'''
-	hypothese = float(multiply(svm.y, svm.alphas).T * svm.K[:, k] + svm.b)
+	hypothese = float(multiply(svm.alphas, svm.y).T * svm.K[:, k] + svm.b)
 	error = hypothese - float(svm.y[k])
 	return error
 
@@ -158,8 +161,8 @@ def innerLoop(svm, i):
 	###		2) y(i)E(i) < 0 & (alpha_i != C <==> alpha_i < C)
 	###		3) y(i)E(i) = 0 & (it's on the boundary, needless optimized)
 	# So just consider the violated conditions 1) & 2)
-	if ((svm.y[i] * Ei > svm.toler) and (svm.alphas[i] > 0)) or 
-		((svm.y[i] * Ei < -svm.toler) and (svm.alphas[i] < C)):
+	if ((svm.y[i] * Ei > svm.toler) and (svm.alphas[i] > 0)) or \
+		((svm.y[i] * Ei < -svm.toler) and (svm.alphas[i] < svm.C)):
 
 		# Step 1: select alpha_j
 
@@ -225,7 +228,7 @@ def innerLoop(svm, i):
 
 		# finnally change one pair alphas
 		return 1
-		
+
 	else:
 		return 0
 
@@ -244,8 +247,7 @@ def train(X, y, C, toler, maxIter, kernel):
 		kernel: kernel type {linear | rbf}
 
 	@return
-		alphas: refer to notes
-		b: refer to notes
+		svm: SVM struct
 	'''
 
 	startTime = time.time()
@@ -269,7 +271,7 @@ def train(X, y, C, toler, maxIter, kernel):
 			print "iter: %d on Entire Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
 		# update alphas through all non-boundary data set
 		else:
-			nonBoundIndexes = nonzero((svm.alphas > 0) & (svm.alphas < C))[0] # [0] row index
+			nonBoundIndexes = nonzero((svm.alphas.A > 0) & (svm.alphas.A < C))[0] # [0] row index
 			for i in nonBoundIndexes:
 				alphaPairChanged += innerLoop(svm, i)
 			print "iter: %d on Non-Bound Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
@@ -284,4 +286,64 @@ def train(X, y, C, toler, maxIter, kernel):
 	# training end
 	print 'SVM training costs %fs' % (time.time() - startTime)
 
-	return svm.alphas, svm.b
+	return svm
+
+def test(svm, testX, testY):
+	'''
+	Description: Test the given test data by the trained svm model.
+
+	@param:
+		svm: SVMStruct
+		testX: testing features
+		testY: testing labels
+	@return:
+		accuracy: rate of correct predictive labels
+	'''
+	testX = mat(testX)
+	testY = mat(testY)
+	[m, n] = shape(testX)
+	supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
+	supportVectors = svm.X[supportVectorIndex]
+	supportVectorsLabels = svm.y[supportVectorIndex]
+	supportVectorAlphas = svm.alphas[supportVectorIndex]
+	matchCount = 0
+	for i in range(m):
+		Kernel = calKernel(supportVectors, testX[i, :], svm.kernel)
+		hypothese = multiply(supportVectorsLabels, supportVectorAlphas).T * Kernel + svm.b
+		if sign(hypothese) == sign(testY[i]):
+			matchCount += 1
+
+	accuracy = float(matchCount / m)
+	return accuracy
+
+def show(svm):
+	'''
+	Description: Show trained svm model in 2-D.
+	'''
+	if shape(svm.X)[1] != 2:
+		print 'The dimension must be 2.'
+		return 
+
+	# draw training data
+	for i in range(svm.m):
+		if svm.y[i] == -1:
+			plt.plot(svm.X[i, 0], svm.X[i, 1], 'or')
+		elif svm.y[i] == 1:
+			plt.plot(svm.X[i, 0], svm.X[i, 1], 'ob')
+
+	# mark support vectors
+	svIndex = nonzero(svm.alphas.A > 0)[0]
+	for i in svIndex:
+		plt.plot(svm.X[i, 0], svm.X[i, 1], 'oy')
+
+	# draw the classifer line
+	w = zeros((2, 1))
+	for i in svIndex:
+		w += multiply(svm.alphas[i] * svm.y[i], svm.X[i, :].T)
+	min_x = min(svm.X[:, 0])[0, 0]
+	max_x = max(svm.X[:, 0])[0, 0]
+	y_min_x = float(-svm.b - w[0] * min_x) / w[1]
+	y_max_x = float(-svm.b - w[0] * max_x) / w[1]
+	plt.plot([min_x, max_x], [y_min_x, y_max_x], '-g')
+	plt.show()
+
