@@ -20,3 +20,4 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 * Perceptron Algorithm ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 
 * Support Vector Machine
+	- Sequential minimal optimization(SMO)
