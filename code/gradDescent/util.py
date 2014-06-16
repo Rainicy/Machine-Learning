@@ -60,6 +60,8 @@ def RMSE(h, y):
 		@return:
 			RMSE: root mean Squared error
 		'''
+		h = np.squeeze(np.asarray(h))
+		y = np.squeeze(np.asarray(y))
 		J = np.sum((h - y)**2)
 		return np.sqrt(J/y.size)
 		
