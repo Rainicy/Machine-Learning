@@ -10,7 +10,7 @@ from LogisticBatchGD import logistic
 from util import RMSE
 
 		
-def SmoothLogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
+def SmoothLogisticStochasticGD(X, y, options):
 	'''
 	Description: This algorithms represents the Smooth Logistic Stochastic Gradient Descent algorithm.
 				More details about Smooth Stochastic GD see the link:
@@ -19,11 +19,16 @@ def SmoothLogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
 	@param:
 		X: training features
 		y: training labels
-		alpha: learning rate
-		threshold: the threshold for terminate the loop
+		options:	1) alpha: learning rate
+					2) threshold: the threshold for terminate the loop
+					3) regularized: True if use regularized, otherwise False
+					4) lambda: the parameter for regularization
 	@return:
 		theta: the parameters model
 	'''
+	
+	alpha = options['alpha']
+	threshold = options['threshold']
 
 	# m: #samples, n:#features
 	m, n = np.shape(X)

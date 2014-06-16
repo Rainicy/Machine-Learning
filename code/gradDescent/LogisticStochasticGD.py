@@ -10,19 +10,24 @@ from LogisticBatchGD import logistic
 from util import RMSE
 
 		
-def LogisticStochasticGD(X, y, alpha=5e-5, threshold=1e-3):
+def LogisticStochasticGD(X, y, options):
 	'''
 	Description: This algorithms represents the Logistic Stochastic Gradient Descent algorithm.
 
 	@param:
 		X: training features
 		y: training labels
-		alpha: learning rate
-		threshold: the threshold for terminate the loop
+		options:	1) alpha: learning rate
+					2) threshold: the threshold for terminate the loop
+					3) regularized: True if use regularized, otherwise False
+					4) lambda: the parameter for regularization
 	@return:
 		theta: the parameters model
 	'''
 
+	alpha = options['alpha']
+	threshold = options['threshold']
+	
 	X = mat(X)
 	y = mat(y).T
 

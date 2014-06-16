@@ -17,28 +17,27 @@ from SmoothLogisticStochasticGD import SmoothLogisticStochasticGD
 def main():
 
 	# For testing
-	np.set_printoptions(threshold='nan')
+	# np.set_printoptions(threshold='nan')
 
 	# Part 1: Prepare for the data for training and testing
 	data = np.loadtxt('../../data/spambase/spambase.data', delimiter=',')
 	trainX, trainY, testX, testY = initialData(data)
 
 	# Part 2: Training the theta model by Batch Gradient Descent
-	alpha = 5e-5
-	threshold = 1e-6
-	theta = LinearBatchGD(trainX, trainY, alpha, threshold)
-	# theta = LinearStochasticGD(trainX, trainY, alpha, threshold)
-	# theta = LogisticBatchGD(trainX, trainY, alpha, threshold)
-	# theta = LogisticStochasticGD(trainX, trainY, alpha, threshold)
-	# theta = SmoothLogisticStochasticGD(trainX, trainY, alpha, threshold)
+	options = {'alpha': 5e-5, 'threshold': 1e-6, 'regularized': True, 'lambda': 50}
+	# theta = LinearBatchGD(trainX, trainY, options)
+	# theta = LinearStochasticGD(trainX, trainY, options)
+	theta = LogisticBatchGD(trainX, trainY, options)
+	# theta = LogisticStochasticGD(trainX, trainY, options)
+	# theta = SmoothLogisticStochasticGD(trainX, trainY, options)
 
 	# Part 3: Testing data 
 	## for linear
-	predictTrain = np.dot(trainX, theta)
-	predictTest = np.dot(testX, theta)
+	# predictTrain = np.dot(trainX, theta)
+	# predictTest = np.dot(testX, theta)
 	## for logistic 
-	# predictTrain = logistic(np.dot(trainX, theta))
-	# predictTest = logistic(np.dot(testX, theta))
+	predictTrain = logistic(np.dot(trainX, theta))
+	predictTest = logistic(np.dot(testX, theta))
 
 	rmseTrain = RMSE(predictTrain, trainY)
 	rmseTest = RMSE(predictTest, testY)
