@@ -58,23 +58,27 @@ def LinearSGD(X, y, options):
 		### 2) Regularized update:
 		#### 	theta_0 = theta_0 + alpha * [(y - hypo) * X]
 		####	theta_j = theta_j + alpha * [(y-hypo)*X - lambda*theta_j]. (for j = 1 to n)
-		if not ifRegularized:
-			for i in range(m):
-				# if i > 1439 and i < 1700:
-				h = calHypo(X[i], theta)
-				diff = y[i] - h
-				theta = updateTheta(X[i], theta, diff, alpha)
+		for i in range(m):
+			# if i > 1439 and i < 1700:
+			h = calHypo(X[i], theta)
+			diff = y[i] - h
+			theta = updateTheta(X[i], theta, diff, alpha, ifRegularized, options['lambda'])
+
 
 	return theta
 
 
-def updateTheta(x, theta, diff, alpha):
+def updateTheta(x, theta, diff, alpha, ifRegularized, lam):
 	'''
 	Description: Updates the theta by one sample.
 	'''
 	theta[0] += alpha * diff
-	for k in x:
-		theta[k+1] += alpha * diff * x[k]
+	if not ifRegularized:
+		for k in x:
+			theta[k+1] += alpha * diff * x[k]
+	else:
+		for k in x:
+			theta[k+1] += alpha * (diff * x[k] - lam * theta[k+1])
 
 	return theta
 

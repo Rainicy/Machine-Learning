@@ -25,7 +25,7 @@ def main():
 
 	# Part 2: trains data
 	print "Step 2: training ......"
-	options = {'numFeatures': numFeatures,'alpha': 5e-7, 'threshold': 1e-3, 'regularized': False, 'lambda': 0.13}
+	options = {'numFeatures': numFeatures,'alpha': 5e-7, 'threshold': 1e-3, 'regularized': True, 'lambda': 1000}
 	theta = LinearSGD(trainX, trainY, options)
 
 if __name__ == '__main__':
