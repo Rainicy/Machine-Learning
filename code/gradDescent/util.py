@@ -48,21 +48,21 @@ def initialData(data):
 	return trainX, trainY, testX, testY
 
 def RMSE(h, y):
-		'''
-		Description: Root Mean Squared Error(RMSE). J = sum(h - y)^2
-					RMSE = sqrt(J/m). [m: #samples]
-					Find more info on: 
-					http://en.wikipedia.org/wiki/Root_mean_square_deviation
+	'''
+	Description: Root Mean Squared Error(RMSE). J = sum(h - y)^2
+				RMSE = sqrt(J/m). [m: #samples]
+				Find more info on: 
+				http://en.wikipedia.org/wiki/Root_mean_square_deviation
 
-		@param:
-			h: hypothese, calculated by (h = theta.T * X)
-			y: the true label
-		@return:
-			RMSE: root mean Squared error
-		'''
-		h = np.squeeze(np.asarray(h))
-		y = np.squeeze(np.asarray(y))
-		J = np.sum((h - y)**2)
-		return np.sqrt(J/y.size)
+	@param:
+		h: hypothese, calculated by (h = theta.T * X)
+		y: the true label
+	@return:
+		RMSE: root mean Squared error
+	'''
+	h = np.squeeze(np.asarray(h))
+	y = np.squeeze(np.asarray(y))
+	J = np.sum((h - y)**2)
+	return np.sqrt(J/y.size)
 		
 
