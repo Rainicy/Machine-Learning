@@ -24,9 +24,9 @@ def main():
 	trainX, trainY, testX, testY = initialData(data)
 
 	# Part 2: Training the theta model by Batch Gradient Descent
-	options = {'alpha': 5e-6, 'threshold': 1e-6, 'regularized': True, 'lambda': 0.13}
-	# theta = LinearBatchGD(trainX, trainY, options)
-	theta = LinearStochasticGD(trainX, trainY, options)
+	options = {'alpha': 5e-6, 'threshold': 1e-6, 'regularized': True, 'lambda': 500}
+	theta = LinearBatchGD(trainX, trainY, options)
+	# theta = LinearStochasticGD(trainX, trainY, options)
 	# theta = LogisticBatchGD(trainX, trainY, options)
 	# theta = LogisticStochasticGD(trainX, trainY, options)
 	# theta = SmoothLogisticStochasticGD(trainX, trainY, options)

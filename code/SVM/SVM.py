@@ -10,6 +10,7 @@ Created on June 9, 2014
 from numpy import *
 import matplotlib.pyplot as plt
 import time
+import shelve
 
 def calKernel(X, x, kernel):
 	'''
@@ -56,7 +57,17 @@ class SVMStruct:
 		self.kernel = kernel
 		self.K = mat(zeros((self.m, self.m)))
 		for i in range(self.m):	# initialize the kernel matrix
+			print 'initialize Kernel: ' + str(i)
 			self.K[:, i] = calKernel(self.X, self.X[i, :], kernel)
+
+	def save(self, file):
+		'''
+		Description: save the SVM model for prediction. 
+		'''
+		d = shelve.open(file)
+		d['svm'] = self
+		d.close()
+
 
 
 def calEk(svm, k):
@@ -267,12 +278,14 @@ def train(X, y, C, toler, maxIter, kernel):
 		# update alphas through whole data set
 		if entireSet:
 			for i in range(svm.m):
+				print 'innerLoop: ' + str(i)
 				alphaPairChanged += innerLoop(svm, i)
 			print "iter: %d on Entire Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
 		# update alphas through all non-boundary data set
 		else:
 			nonBoundIndexes = nonzero((svm.alphas.A > 0) & (svm.alphas.A < C))[0] # [0] row index
 			for i in nonBoundIndexes:
+				print 'NonBoundInnerLoop: ' + str(i)
 				alphaPairChanged += innerLoop(svm, i)
 			print "iter: %d on Non-Bound Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
 		iteration += 1
