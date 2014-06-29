@@ -31,7 +31,7 @@ print "step 2: training..."
 C = 0.6  
 toler = 0.001  
 maxIter = 50  
-svmClassifier = SVM.train(train_x, train_y.T, C, toler, maxIter, kernel = ('linear', 0))  
+svmClassifier = SVM.train(train_x, train_y.T, C, toler, maxIter, kernel = ('rbf', 0))  
   
 ## step 3: testing  
 print "step 3: testing..."  

@@ -11,6 +11,38 @@ from numpy import *
 import matplotlib.pyplot as plt
 import time
 import shelve
+import scipy
+from scipy.spatial.distance import pdist, squareform
+
+
+def calKernels(X, kernel):
+	'''
+	Description: Calculate the Kernel(K[m, m]) by just onece.
+
+	@param:
+		X: X[m, n]
+		kernel: the kernel options {linear | rbf}
+	@return:
+		K[m, m]
+	'''
+	m = shape(X)[0]
+	if kernel[0] == 'linear':
+		K = X * X.T
+	elif kernel[0] == 'rbf':
+		sigma = kernel[1]
+		if sigma == 0:
+			sigma = 1
+		pairwise_dists = squareform(pdist(X, 'euclidean'))
+		K = scipy.exp(pairwise_dists ** 2 / (-2.0 * sigma ** 2))
+	else:
+		raise NameError('The Kernel by given is not recognized.')
+
+	# d = shelve.open('./models/kernel')
+	# d['Kernel'] = mat(K)
+	# d.close()
+
+	return mat(K)
+
 
 def calKernel(X, x, kernel):
 	'''
@@ -56,9 +88,13 @@ class SVMStruct:
 		self.errorCache = mat(zeros((self.m, 2)))
 		self.kernel = kernel
 		self.K = mat(zeros((self.m, self.m)))
-		for i in range(self.m):	# initialize the kernel matrix
-			print 'initialize Kernel: ' + str(i)
-			self.K[:, i] = calKernel(self.X, self.X[i, :], kernel)
+		print 'initialize kernel ... '
+		self.K = calKernels(self.X, kernel)
+		print 'done with kernel ...'
+
+		# for i in range(self.m):	# initialize the kernel matrix
+		# 	# print 'initialize Kernel: ' + str(i)
+		# 	self.K[:, i] = calKernel(self.X, self.X[i, :], kernel)
 
 	def save(self, file):
 		'''

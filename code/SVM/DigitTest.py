@@ -28,8 +28,9 @@ def main(argv):
 
 	# build the k-th class
 	k_class = int(argv)
-	train_y[train_y==k_class] = 1
 	train_y[train_y!=k_class] = -1
+	train_y[train_y==k_class] = 1
+	
 
 	# print train_y
 	# raw_input()
