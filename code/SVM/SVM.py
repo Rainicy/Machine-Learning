@@ -8,41 +8,14 @@ Created on June 9, 2014
 '''
 
 from numpy import *
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import time
 import shelve
 import scipy
-from scipy.spatial.distance import pdist, squareform
 
+from util import writeLog
 
-def calKernels(X, kernel):
-	'''
-	Description: Calculate the Kernel(K[m, m]) by just onece.
-
-	@param:
-		X: X[m, n]
-		kernel: the kernel options {linear | rbf}
-	@return:
-		K[m, m]
-	'''
-	m = shape(X)[0]
-	if kernel[0] == 'linear':
-		K = X * X.T
-	elif kernel[0] == 'rbf':
-		sigma = kernel[1]
-		if sigma == 0:
-			sigma = 1
-		pairwise_dists = squareform(pdist(X, 'euclidean'))
-		K = scipy.exp(pairwise_dists ** 2 / (-2.0 * sigma ** 2))
-	else:
-		raise NameError('The Kernel by given is not recognized.')
-
-	# d = shelve.open('./models/kernel')
-	# d['Kernel'] = mat(K)
-	# d.close()
-
-	return mat(K)
-
+# 
 
 def calKernel(X, x, kernel):
 	'''
@@ -63,13 +36,44 @@ def calKernel(X, x, kernel):
 		sigma = kernel[1]
 		if sigma == 0:
 			sigma = 1
+		# diffs = X - x
 		for i in range(m):
 			diff = X[i, :] - x
-			K[i] = exp(diff * diff.T / (-2.0 * sigma**2))
+			K[i] = diff * diff.T
+		K = exp(K/ (-2.0 * sigma**2))
+		# raw_input()
 	else:
 		raise NameError('The Kernel by given is not recognized.')
 
 	return K
+
+class SVMSimpleStruct:
+	'''
+	Description: class for a simpler SVM model, which just including whose alphas > 0.
+		Including:
+			1) svm.supportVectors: where the X and the alphas > 0
+			2) svm.supportVectorsLabels: where the y_i
+			3) svm.supportVectorAlphas: where the alphas_i
+			4) svm.kernel: the kernel struct
+			5) svm.b: b
+	'''
+	
+	def __init__(self, svm):
+		supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
+		# print svm.alphas.A
+		# # print supportVectorIndex
+		# print len(supportVectorIndex)
+		# raw_input()
+		self.supportVectors = svm.X[supportVectorIndex]
+		self.supportVectorsLabels = svm.y[supportVectorIndex]
+		self.supportVectorAlphas = svm.alphas[supportVectorIndex]
+		self.kernel = svm.kernel
+		self.b = svm.b
+
+	def save(self, file):
+		d = shelve.open(file)
+		d['svm'] = self
+		d.close()
 
 
 
@@ -88,14 +92,9 @@ class SVMStruct:
 		self.errorCache = mat(zeros((self.m, 2)))
 		self.kernel = kernel
 		self.K = mat(zeros((self.m, self.m)))
-		print 'initialize kernel ... '
-		self.K = calKernels(self.X, kernel)
-		print 'done with kernel ...'
-
-		# for i in range(self.m):	# initialize the kernel matrix
-		# 	# print 'initialize Kernel: ' + str(i)
-		# 	self.K[:, i] = calKernel(self.X, self.X[i, :], kernel)
-
+		for i in range(self.m):	# initialize the kernel matrix
+			# print 'initialize Kernel: ' + str(i)
+			self.K[:, i] = calKernel(self.X, self.X[i, :], kernel)
 	def save(self, file):
 		'''
 		Description: save the SVM model for prediction. 
@@ -314,16 +313,20 @@ def train(X, y, C, toler, maxIter, kernel):
 		# update alphas through whole data set
 		if entireSet:
 			for i in range(svm.m):
-				print 'innerLoop: ' + str(i)
+				# print 'innerLoop: ' + str(i)
 				alphaPairChanged += innerLoop(svm, i)
-			print "iter: %d on Entire Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
+			log = "iter: %d on Entire Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
+			writeLog(log)
+			print log
 		# update alphas through all non-boundary data set
 		else:
 			nonBoundIndexes = nonzero((svm.alphas.A > 0) & (svm.alphas.A < C))[0] # [0] row index
 			for i in nonBoundIndexes:
-				print 'NonBoundInnerLoop: ' + str(i)
+				# print 'NonBoundInnerLoop: ' + str(i)
 				alphaPairChanged += innerLoop(svm, i)
-			print "iter: %d on Non-Bound Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
+			log = "iter: %d on Non-Bound Set | Alphas Pairs Changed: %d" % (iteration, alphaPairChanged)
+			writeLog(log)
+			print log
 		iteration += 1
 
 		# change update order: Entire Set <=> Non-boundary Set
@@ -352,6 +355,8 @@ def test(svm, testX, testY):
 	testY = mat(testY)
 	[m, n] = shape(testX)
 	supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
+	# print supportVectorIndex
+	# raw_input()
 	supportVectors = svm.X[supportVectorIndex]
 	supportVectorsLabels = svm.y[supportVectorIndex]
 	supportVectorAlphas = svm.alphas[supportVectorIndex]
@@ -362,7 +367,7 @@ def test(svm, testX, testY):
 		if sign(hypothese) == sign(testY[i]):
 			matchCount += 1
 
-	accuracy = float(matchCount / m)
+	accuracy = float(matchCount) / m
 	return accuracy
 
 def show(svm):
