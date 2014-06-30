@@ -32,6 +32,26 @@ def loadDigitData():
 
 	return train_x, mat(train_y).T, test_x, mat(test_y).T
 
+def loadDigitTestData():
+	'''
+	Description: Loading the digit data from 'digit_rec' folder. 
+
+	@return:
+		test_x:  testing features
+		test_y:  testing labels
+	'''
+	testFile = '../../data/digit_rec/test_full_org.csv'
+	testData = genfromtxt(testFile, delimiter=',')
+
+	# get number of features: n
+	dump, n = shape(testData)
+
+	# skip the first row, which is names for each column
+	test_x  = testData[1:, :n-1]
+	test_y  = testData[1:, -1]
+
+	return test_x, mat(test_y).T
+
 def writeLog(s):
 	'''
 	Description: Write the log.

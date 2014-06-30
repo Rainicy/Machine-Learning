@@ -355,8 +355,6 @@ def test(svm, testX, testY):
 	testY = mat(testY)
 	[m, n] = shape(testX)
 	supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
-	# print supportVectorIndex
-	# raw_input()
 	supportVectors = svm.X[supportVectorIndex]
 	supportVectorsLabels = svm.y[supportVectorIndex]
 	supportVectorAlphas = svm.alphas[supportVectorIndex]
@@ -369,6 +367,38 @@ def test(svm, testX, testY):
 
 	accuracy = float(matchCount) / m
 	return accuracy
+
+
+def testDigit(svm, testX, m):
+	'''
+	Description: Test the given svm model, and return the vote result.
+
+	@param:
+		svm: SVMStruct
+		testX: testing features
+		m: number of testing samples
+	@return:
+		Vote_k: [m, 1] matrix, value equal to {0,1}, if sign(hypothese) = -1, vote for 1, otherwise 0.
+		Vote_l: [m, 1] matrix, value equal to {0,1}, if sign(hypothese) = 1, vote for 1, otherwise 0.
+	'''
+	Vote_k = mat(zeros((m,1)))
+	Vote_l = mat(zeros((m,1)))
+
+	testX = mat(testX)
+	supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
+	supportVectors = svm.X[supportVectorIndex]
+	supportVectorsLabels = svm.y[supportVectorIndex]
+	supportVectorAlphas = svm.alphas[supportVectorIndex]
+	for i in range(m):
+		Kernel = calKernel(supportVectors, testX[i, :], svm.kernel)
+		hypothese = multiply(supportVectorsLabels, supportVectorAlphas).T * Kernel + svm.b
+		if sign(hypothese) == -1:
+			Vote_k[i] = 1
+		else:
+			Vote_l[i] = 1
+			
+	return Vote_k, Vote_l
+
 
 def show(svm):
 	'''

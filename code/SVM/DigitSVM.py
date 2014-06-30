@@ -9,7 +9,7 @@ from numpy import *
 import sys
 import shelve
 
-from util import loadDigitData, writeLog
+from util import loadDigitData, loadDigitTestData, writeLog
 import SVM
 from SVM import *
 
@@ -97,14 +97,98 @@ def buildSVM(k, l):
 	writeLog(log)
 
 
+def testSVM():
+	## loading data
+	log = "Step 1: loading data..."
+	writeLog(log)
+	print log
+	test_x, test_y = loadDigitTestData()
+	# scales from -1 to 1
+	test_x = test_x/255.0*2 - 1
 
-def main():
+	# initialize the vote matrix for testing data, Votes[m, 10]
+	m, dump = shape(test_y)
+	Votes = mat(zeros((m, 10)))
+
+	## testing data
+	log = "Step 2: testing data..."
 	for i in range(10):
 		for j in range(i+1, 10):
-			log = '------------{} & {}----------'.format(i, j)
+			log = "--working on model: " + str(i) + '&' + str(j)
 			print log
 			writeLog(log)
-			buildSVM(i, j)
+			# loading the models
+			d = shelve.open('./models/svm_' + str(i) + '_' + str(j))
+			svmClassifier = d['svm']
+			d.close()
+			# testing using the given model and votes
+			Votes_k, Votes_l = SVM.testDigit(svmClassifier, test_x, m)
+
+			# write to the Votes
+			Votes[:, i] += Votes_k
+			Votes[:, j] += Votes_l
+
+	## saving Votes matrix
+	log = "Step 3: saving votes..."
+	print log
+	writeLog(log)
+	d = shelve.open('./models/Votes')
+	d['vote'] = Votes
+	d.close()
+
+def predictSVM():
+	## loading the Votes
+	log = "Step 1: loading votes..."
+	writeLog(log)
+	print log
+	d = shelve.open('./models/Votes')
+	Votes = d['vote']
+	d.close()
+
+	## loading the testing data
+	log = "Step 2: loading testing data..."
+	writeLog(log)
+	print log
+	test_x, test_y = loadDigitTestData()
+
+	## predict the testing data
+	log = "Step 3: predicting the data..."
+	writeLog(log)
+	print log
+	predict_y =  Votes.argmax(axis=1)
+	m, n = shape(test_y)
+	matchCount = 0
+	for i in range(m):
+		if predict_y[i] == test_y[i]:
+			matchCount += 1
+
+
+	accuracy = float(matchCount) / m
+	log =  "step 4: show the result..."
+	writeLog(log)
+	print log
+	log = 'The classify accuracy is: %.3f%%' % (accuracy * 100)  
+	writeLog(log)
+	print log
+
+
+
+
+def main():
+	### building the SVM models
+	# for i in range(10):
+	# 	for j in range(i+1, 10):
+	# 		log = '------------{} & {}----------'.format(i, j)
+	# 		print log
+	# 		writeLog(log)
+	# 		buildSVM(i, j)
+	# set_printoptions(threshold='nan')
+
+	### build the Votes matrix
+	# testSVM()
+
+	### predict the results
+	predictSVM()
 
 if __name__ == '__main__':
 	main()
