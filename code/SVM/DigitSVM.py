@@ -72,14 +72,14 @@ def buildSVM(k, l):
 	C = 16
 	toler = 0.001
 	maxIter = 50
-	svmClassifier = SVM.train(train_x, train_y.T, C, toler, maxIter, kernel = ('rbf', 10))
+	svmClassifier = SVM.train(train_x, train_y.T, C, toler, maxIter, kernel = ('rbf', 13))
 	# saves the model to disk for feature prediction
 	svmClassifier.save('./models/svm_' + str(k) + '_' + str(l))
 	# simpleSVM = SVMSimpleStruct(svmClassifier)
 	# simpleSVM.save('./models/simple_svm_' + str(k_class))
 
 	# # load the model
-	# print 'Step 2: loading model...'
+	# print 'Step 2: loading model..
 	# d = shelve.open('./models/svm_' + str(k) + '_' + str(l))
 	# svmClassifier = d['svm']
 	# d.close()
@@ -122,7 +122,7 @@ def testSVM():
 			svmClassifier = d['svm']
 			d.close()
 			# testing using the given model and votes
-			Votes_k, Votes_l = SVM.testDigit(svmClassifier, test_x, m)
+			Votes_k, Votes_l = SVM.testDigitScores(svmClassifier, test_x, m)
 
 			# write to the Votes
 			Votes[:, i] += Votes_k
@@ -132,7 +132,7 @@ def testSVM():
 	log = "Step 3: saving votes..."
 	print log
 	writeLog(log)
-	d = shelve.open('./models/Votes')
+	d = shelve.open('./models/Votes_Score_noscale')
 	d['vote'] = Votes
 	d.close()
 
@@ -141,7 +141,7 @@ def predictSVM():
 	log = "Step 1: loading votes..."
 	writeLog(log)
 	print log
-	d = shelve.open('./models/Votes')
+	d = shelve.open('./models/Votes_Score_noscale')
 	Votes = d['vote']
 	d.close()
 
@@ -161,6 +161,11 @@ def predictSVM():
 	for i in range(m):
 		if predict_y[i] == test_y[i]:
 			matchCount += 1
+		else:
+		# 	print i
+		# 	print str(test_y[i]) + '\t' + str(predict_y[i]) + '\t' + str(Votes[i])
+		# 	raw_input()
+			writeLog(str(test_y[i]) + '\t' + str(predict_y[i]) + '\t' + str(Votes[i]))
 
 
 	accuracy = float(matchCount) / m
@@ -183,9 +188,10 @@ def main():
 	# 		writeLog(log)
 	# 		buildSVM(i, j)
 	# set_printoptions(threshold='nan')
+	# buildSVM(2, 8)
 
 	### build the Votes matrix
-	# testSVM()
+	testSVM()
 
 	### predict the results
 	predictSVM()

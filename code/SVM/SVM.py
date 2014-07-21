@@ -336,7 +336,9 @@ def train(X, y, C, toler, maxIter, kernel):
 			entireSet = True
 
 	# training end
-	print 'SVM training costs %fs' % (time.time() - startTime)
+	log = 'SVM training costs %fs' % (time.time() - startTime)
+	print log
+	writeLog(log)
 
 	return svm
 
@@ -399,6 +401,96 @@ def testDigit(svm, testX, m):
 			
 	return Vote_k, Vote_l
 
+def testDigitScores(svm, testX, m):
+	'''
+	Description: Test the given svm model, and return the scores for each class.
+				 And before giving the score, we need scale the hypothese to [-1 to 1].
+				 Scaling by training dataset.
+
+	@param:
+		svm: SVMStruct
+		testX: testing features
+		m: number of testing samples
+	@return:
+		Vote_k: [m, 1] matrix, value equal to abs(hypothese/scaledHypo)
+		Vote_l: [m, 1] matrix, value equal to abs(hypothese/scaledHypo)
+	'''
+	Vote_k = mat(zeros((m,1)))
+	Vote_l = mat(zeros((m,1)))
+	testX = mat(testX)
+	supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
+	supportVectors = svm.X[supportVectorIndex]
+	supportVectorsLabels = svm.y[supportVectorIndex]
+	supportVectorAlphas = svm.alphas[supportVectorIndex]
+
+	# find the maximum hypothese and minimum hypothese during the training X set.
+	maxHypo = 1
+	minHypo = 1
+	for i in range(svm.m):
+		Kernel = calKernel(supportVectors, svm.X[i, :], svm.kernel)
+		hypothese = multiply(supportVectorsLabels, supportVectorAlphas).T * Kernel + svm.b
+		if (hypothese < 0) and (hypothese < minHypo):
+			minHypo = hypothese
+		elif (hypothese > 0) and (hypothese > maxHypo):
+			maxHypo = hypothese
+
+	# print 'maxHypo=' + str(maxHypo) + '\tminHypo=' + str(minHypo)
+	for i in range(m):
+		Kernel = calKernel(supportVectors, testX[i, :], svm.kernel)
+		hypothese = multiply(supportVectorsLabels, supportVectorAlphas).T * Kernel + svm.b
+		if hypothese < 0:
+			Vote_k[i] = abs(hypothese/minHypo)
+		else:
+			Vote_l[i] = abs(hypothese/maxHypo)
+
+	return Vote_k, Vote_l
+
+# def testDigitScores33(svm, testX, m):
+# 	'''
+# 	Description: Test the given svm model, and return the scores for each class.
+# 				 And before giving the score, we need scale the hypothese to [-1 to 1].
+# 				 Scaling by training dataset.
+
+# 	@param:
+# 		svm: SVMStruct
+# 		testX: testing features
+# 		m: number of testing samples
+# 	@return:
+# 		Vote_k: [m, 1] matrix, value equal to abs(hypothese/scaledHypo)
+# 		Vote_l: [m, 1] matrix, value equal to abs(hypothese/scaledHypo)
+# 	'''
+# 	Vote_k = mat(zeros((m,1)))
+# 	Vote_l = mat(zeros((m,1)))
+# 	testX = mat(testX)
+# 	supportVectorIndex = nonzero(svm.alphas.A > 0)[0]
+# 	supportVectors = svm.X[supportVectorIndex]
+# 	supportVectorsLabels = svm.y[supportVectorIndex]
+# 	supportVectorAlphas = svm.alphas[supportVectorIndex]
+
+# 	# find the maximum hypothese and minimum hypothese during the training X set.
+# 	maxHypo = -inf
+# 	minHypo = inf
+# 	for i in range(svm.m):
+# 		Kernel = calKernel(supportVectors, svm.X[i, :], svm.kernel)
+# 		hypothese = multiply(supportVectorsLabels, supportVectorAlphas).T * Kernel + svm.b
+# 		if (hypothese < 0) and (hypothese < minHypo):
+# 			minHypo = hypothese
+# 		elif (hypothese > 0) and (hypothese > maxHypo):
+# 			maxHypo = hypothese
+
+# 	print 'maxHypo=' + str(maxHypo) + '\tminHypo=' + str(minHypo)
+	
+# 	Kernel = calKernel(supportVectors, testX[33, :], svm.kernel)
+# 	hypothese = multiply(supportVectorsLabels, supportVectorAlphas).T * Kernel + svm.b
+# 	if hypothese < 0:
+# 		Vote_k[33] = abs(hypothese/minHypo)
+# 		print 'k:' + str(Vote_k[33])
+# 	else:
+# 		Vote_l[33] = abs(hypothese/maxHypo)
+# 		print 'l:' + str(Vote_l[33])
+# 	# raw_input()
+
+# 	return Vote_k, Vote_l
 
 def show(svm):
 	'''
