@@ -113,7 +113,7 @@ $$
 	\implies \mathcal{L}(u,\lambda) = u^T \Sigma u + \lambda (u^Tu - 1)
 $$
 $$
-	\implies \frac{\partial \mathcal{L}(u,\lambda)}{\partial u} = \frac{\partial(u^T\Sigma u+\lambda u^Tu}{\partial u}
+	\implies \frac{\partial \mathcal{L}(u,\lambda)}{\partial u} = \frac{\partial(u^T\Sigma u+\lambda u^Tu)}{\partial u}
     = \Sigma u - \lambda u \overset{Set}{=} 0
 $$
 $$
@@ -122,7 +122,7 @@ $$
 
 Finally, we get the $\Sigma u = \lambda u$, where $u$ is the engivector of $\Sigma$ and $\lambda$ is the engivalue of  $\Sigma$.
 
-To summarize, we have found that if we wish to find a 1-dimensional subspace with to approximate the data, we should choose $u$ to be the principal eigenvector of $\Sigma$. More generally, if we wish to project our data to k-dimensional subspace ($k<n$), we should choose $u_1, u_2, ..., u_k$ to be the top $k$ vectors of $\Sigma$. The $u_i^{'}$s now form a new, orthogonal basis for the data.\footnote{Because $\Sigma$ is symmetric, the $u_i$'s will (or always can be chosen to be) orthogonal to each other.}
+To summarize, we have found that if we wish to find a 1-dimensional subspace with to approximate the data, we should choose $u$ to be the principal eigenvector of $\Sigma$. More generally, if we wish to project our data to k-dimensional subspace ($k<n$), we should choose $u_1, u_2, ..., u_k$ to be the top $k$ vectors of $\Sigma$. The $u_i$'s now form a new, orthogonal basis for the data.\footnote{Because $\Sigma$ is symmetric, the $u_i$'s will (or always can be chosen to be) orthogonal to each other.}
 
 Then, to represent $x^{(i)}$ in this basis, we need only compute the corresponding vector
 $$
