@@ -5,7 +5,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 ## Algorithms
 
 #### 1. Supervised Learning
-* Naive Bayes
+* Naive Bayes ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 
 * Linear Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- Linear Batch Gradient Descent (Regularized & Nomal)
