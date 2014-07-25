@@ -79,7 +79,7 @@ def train_missing_value(X, y):
 			for j in range(n):
 				if X[i][j] == 1:
 					total_count += 1
-					if randint(1,10) == 1:
+					if randint(1,10) <= 1:
 						skip_count += 1
 						continue
 					Phi_y_1[j] += 1
@@ -87,7 +87,7 @@ def train_missing_value(X, y):
 			for j in range(n):
 				if X[i][j] == 1:
 					total_count += 1
-					if randint(1,10) == 1:
+					if randint(1,10) <= 1:
 						skip_count += 1
 						continue
 					Phi_y_0[j] += 1
@@ -164,14 +164,14 @@ def test_missing_value(X, NB_Model):
 		for j in range(n):
 			if X[i][j] == 1:
 				total_count += 1
-				if randint(1,10) == 1:
+				if randint(1,10) <= 1:
 					skip_count += 1
 					continue
 				prob_y_1[i] *= NB_Model["Phi_y_1"][j]
 				prob_y_0[i] *= NB_Model["Phi_y_0"][j]
 			else:
 				total_count += 1
-				if randint(1,10) == 1:
+				if randint(1,10) <= 1:
 					skip_count += 1
 					continue
 				prob_y_1[i] *= (1 - NB_Model["Phi_y_1"][j])
