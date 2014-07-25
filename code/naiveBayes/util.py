@@ -28,9 +28,6 @@ def initialData(data):
 	testData = data[testIndex]
 	trainData = np.delete(data, testIndex, 0)
 
-	# shffule the training data
-	np.random.shuffle(trainData)
-
 	# get mean values
 	# Pr[fi <= mui | spam]
 	# Pr[fi > mui | spam]
@@ -40,13 +37,17 @@ def initialData(data):
 	mean = np.mean(data[:, :-1], axis = 0)
 
 	trainX = trainData[:, :-1]
-	trainX[trainX <= mean] = 0
-	trainX[trainX > mean] = 1
+	index1 = trainX > mean
+	index2 = trainX <= mean
+	trainX[index1] = 1
+	trainX[index2] = 0
 	trainY = trainData[:, -1]
 
 	testX = testData[:, :-1]
-	testX[testX <= mean] = 0
-	testX[testX > mean] = 1
+	index1 = testX > mean
+	index2 = testX <= mean
+	testX[index1] = 1
+	testX[index2] = 0
 	testY = testData[:, -1]
 
 	return trainX, trainY, testX, testY
