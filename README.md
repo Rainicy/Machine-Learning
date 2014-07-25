@@ -10,7 +10,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 * Linear Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- [Linear Batch Gradient Descent](./code/gradDescent/LinearBatchGD.py) (Regularized & Nomal)
 	- [Linear Stochastic Gradient Descent](./code/gradDescent/LinearStochasticGD.py)
-	- [Linear Normal Equations (Regularized & Nomal)](./code/normalEquations/normEquations.py)
+	- [Linear Normal Equations(./code/normalEquations/normEquations.py)] (Regularized & Nomal)
 	- [Locally Weighted Linear Regression](./code/locallyWeighted/lwr.py) ([Ref: <Machine Learning in Action> Chapter 8](http://www.manning.com/pharrington/))
 
 * Logistic Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
