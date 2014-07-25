@@ -40,13 +40,13 @@ def initialData(data):
 	mean = np.mean(data[:, :-1], axis = 0)
 
 	trainX = trainData[:, :-1]
-	trainX[trainX > mean] = 1
 	trainX[trainX <= mean] = 0
+	trainX[trainX > mean] = 1
 	trainY = trainData[:, -1]
 
 	testX = testData[:, :-1]
-	testX[testX > mean] = 1
 	testX[testX <= mean] = 0
+	testX[testX > mean] = 1
 	testY = testData[:, -1]
 
 	return trainX, trainY, testX, testY
