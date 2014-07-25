@@ -5,21 +5,21 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 ## Algorithms
 
 #### 1. Supervised Learning
-* Naive Bayes ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
+* [Naive Bayes](./code/naiveBayes/NaiveBayes.py) ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 
 * Linear Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
-	- Linear Batch Gradient Descent (Regularized & Nomal)
-	- Linear Stochastic Gradient Descent
-	- Linear Normal Equations (Regularized & Nomal)
-	- Locally Weighted Linear Regression ([Ref: <Machine Learning in Action> Chapter 8](http://www.manning.com/pharrington/))
+	- [Linear Batch Gradient Descent](./code/gradDescent/LinearBatchGD.py) (Regularized & Nomal)
+	- [Linear Stochastic Gradient Descent](./code/gradDescent/LinearStochasticGD.py)
+	- [Linear Normal Equations (Regularized & Nomal)](./code/normalEquations/normEquations.py)
+	- [Locally Weighted Linear Regression](./code/locallyWeighted/lwr.py) ([Ref: <Machine Learning in Action> Chapter 8](http://www.manning.com/pharrington/))
 
 * Logistic Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
-	- Logistic Batch Gradient Descent (Regularized & Nomal)
-	- Logistic Stochastic Gradient Descent
-    - Smooth Stochastic Gradient Descent ([Ref: <Machine Learning in Action>(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
-    - Newton-Raphson([Ref: Logistic Regression by Jia Li](http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/logit.pdf))
+	- [Logistic Batch Gradient Descent (Regularized & Nomal)](./code/gradDescent/LogisticBatchGD.py)
+	- [Logistic Stochastic Gradient Descent](./code/gradDescent/LogisticStochasticGD.py)
+    - [Smooth Stochastic Gradient Descent](./code/gradDescent/SmoothLogisticStochasticGD.py) ([Ref: <Machine Learning in Action>(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
+    - [Newton-Raphson](./code/newtonRaphson/newton.py)([Ref: Logistic Regression by Jia Li](http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/logit.pdf))
 
-* Perceptron Algorithm ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
+* [Perceptron Algorithm](./code/perceptron/perceptron.py) ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 
 * Support Vector Machine
-	- Sequential minimal optimization(SMO)
+	- [Sequential minimal optimization(SMO)](./code/SVM/SVM.py)
