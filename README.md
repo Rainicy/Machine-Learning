@@ -14,7 +14,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 	- [Locally Weighted Linear Regression](./code/locallyWeighted/lwr.py) ([Ref: <Machine Learning in Action> Chapter 8](http://www.manning.com/pharrington/))
 
 * Logistic Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
-	- [Logistic Batch Gradient Descent (Regularized & Nomal)](./code/gradDescent/LogisticBatchGD.py)
+	- [Logistic Batch Gradient Descent](./code/gradDescent/LogisticBatchGD.py) (Regularized & Nomal)
 	- [Logistic Stochastic Gradient Descent](./code/gradDescent/LogisticStochasticGD.py)
     - [Smooth Stochastic Gradient Descent](./code/gradDescent/SmoothLogisticStochasticGD.py) ([Ref: <Machine Learning in Action>(stocGradAscent1)](https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py))
     - [Newton-Raphson](./code/newtonRaphson/newton.py)([Ref: Logistic Regression by Jia Li](http://sites.stat.psu.edu/~jiali/course/stat597e/notes2/logit.pdf))
