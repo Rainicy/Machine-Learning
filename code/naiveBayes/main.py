@@ -24,13 +24,13 @@ def main():
 
 		# # Step 2: training data
 		# print "Training data..."
-		model = NaiveBayes.train(trainX, trainY)
-		# model = NaiveBayes.train_missing_value(trainX, trainY)
+		# model = NaiveBayes.train(trainX, trainY)
+		model = NaiveBayes.train_missing_value(trainX, trainY)
 
 		# # Step 3: predict test data
 		# print "Predicting data..."
-		predict_y = NaiveBayes.test(testX, model)
-		# predict_y = NaiveBayes.test_missing_value(testX, model)
+		# predict_y = NaiveBayes.test(testX, model)
+		predict_y = NaiveBayes.test_missing_value(testX, model)
 
 		# # Step 4: Calculate the Accuracy.
 		# print "Accuracy..."

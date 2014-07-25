@@ -178,8 +178,8 @@ def test_missing_value(X, NB_Model):
 
 	y = (prob_y_1 * NB_Model["Phi_Y"]) / (prob_y_1 * NB_Model["Phi_Y"] + prob_y_0 * (1 - NB_Model["Phi_Y"]))
 
-	index_0 = y<0.5
-	index_1 = y>=0.5
+	index_0 = (y<0.5)
+	index_1 = (y>=0.5)
 	y[index_0] = 0
 	y[index_1] = 1
 
