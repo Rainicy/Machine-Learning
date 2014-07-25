@@ -7,6 +7,36 @@ Created on July 24, 2014
 import numpy as np
 from random import *
 
+def loadData(train, test):
+	'''
+	Description: Given the train and test files names, and load the data.
+
+	@return:
+		trainX:	
+		trainY:
+		testX:
+		testY:
+	'''
+	trainData = np.loadtxt(train, delimiter=',')
+	mean = np.mean(trainData[:, :-1], axis = 0)
+	testData = np.loadtxt(test, delimiter=',')
+
+	trainX = trainData[:, :-1]
+	index1 = (trainX > mean) & (trainX != -1)
+	index2 = (trainX <= mean) & (trainX != -1)
+	trainX[index1] = 1
+	trainX[index2] = 0
+	trainY = trainData[:, -1]
+
+	testX = testData[:, :-1]
+	index1 = (testX > mean) & (testX != -1)
+	index2 = (testX <= mean) & (testX != -1)
+	testX[index1] = 1
+	testX[index2] = 0
+	testY = testData[:, -1]
+
+	return trainX, trainY, testX, testY
+
 def splitData(data):
 	'''
 	Description: Split the data into training and testing part, including 80% training,
