@@ -38,6 +38,5 @@ def main():
 		print "Accuracy on testing : {:.2f}%".format(accuracy*100)
 		print "....Done...."
 
-
 if __name__ == '__main__':
 	main()
