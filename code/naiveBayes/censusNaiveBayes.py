@@ -16,7 +16,8 @@ def load(fileName):
 
 	data = []
 	## transform the continuous features to smaller or bigger two situations.
-	continuous_list = [0,2,3,5,16,17,18,24,39]	 
+	# continuous_list = [0,2,3,5,16,17,18,24,39]
+	continuous_list = [5, 16, 17, 18, 24] 
 	for i in range(42):
 		data.append(dict())
 		if i in continuous_list:
@@ -56,7 +57,8 @@ def train(fileName, data):
 	Description: Given by the dictionary arrays for the data, and now use the dictionary to compute 
 				the parameters. E.X. Phi
 	'''
-	continuous_list = [0,2,3,5,16,17,18,24,39]
+	# continuous_list = [0,2,3,5,16,17,18,24,39]
+	continuous_list = [5, 16, 17, 18, 24]  
 	pos_label = ' 50000+.'
 	neg_label = ' - 50000.'
 	pos_data = copy.deepcopy(data)	# " 50000+."
@@ -102,7 +104,8 @@ def test(fileName, pos_data, neg_data, m):
 	'''
 	Description: By given testing data features, and test file name, predict the labels.
 	'''
-	continuous_list = [0,2,3,5,16,17,18,24,39]
+	# continuous_list = [0,2,3,5,16,17,18,24,39]
+	continuous_list = [5, 16, 17, 18, 24] 
 	pos_label = ' 50000+.'
 	neg_label = ' - 50000.'
 
@@ -153,18 +156,21 @@ def test(fileName, pos_data, neg_data, m):
 
 
 
-trainFile = '../../data/census-income/census-income.data'
-testFile = '../../data/census-income/census-income.test'
+def main():
+	trainFile = '../../data/census-income/census-income.data'
+	testFile = '../../data/census-income/census-income.test'
 
-print "loading ..."
-trainSet, dump = load(trainFile)
-print "done ......"
-print "training ..."
-pos_data, neg_data = train(trainFile, trainSet)
-print "done ......"
-print "testing ..."
-testSet, m = load(testFile)
-test(testFile, pos_data, neg_data, m)
-print "done ......"
+	print "loading ..."
+	trainSet, dump = load(trainFile)
+	print "done ......"
+	print "training ..."
+	pos_data, neg_data = train(trainFile, trainSet)
+	print "done ......"
+	print "testing ..."
+	testSet, m = load(testFile)
+	test(testFile, pos_data, neg_data, m)
+	print "done ......"
 
+if __name__ == '__main__':
+	main()
 
