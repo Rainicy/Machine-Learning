@@ -7,7 +7,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 #### 1. Supervised Learning
 * Naive Bayes
 	- [Two-class NB with/without Missing Features](./code/naiveBayes/NaiveBayes.py)([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
-	- [More-class NB with Missing Features](./code/censusNaiveBayes.py)([data: censusIncome])(https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29)
+	- [More-class NB with Missing Features](./code/censusNaiveBayes.py)([data: censusIncome](https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29))
 
 * Linear Regression ([data: spambase](http://archive.ics.uci.edu/ml/datasets/Spambase))
 	- [Linear Batch Gradient Descent](./code/gradDescent/LinearBatchGD.py) (Regularized & Nomal)
