@@ -17,9 +17,9 @@ def load(fileName):
 	data = []
 	## transform the continuous features to smaller or bigger two situations.
 	# continuous_list = [0,2,3,5,16,17,18,24,39]
-	# continuous_list = [5, 16, 17, 18, 24] 
-	continuous_list = [0, 2, 10, 11, 12]
-	for i in range(15):
+	continuous_list = [5, 16, 17, 18, 24] 
+	# continuous_list = [0, 2, 10, 11, 12]
+	for i in range(42):
 		data.append(dict())
 		if i in continuous_list:
 			data[i]["sum"] = 0.0
@@ -59,12 +59,12 @@ def train(fileName, data):
 				the parameters. E.X. Phi
 	'''
 	# continuous_list = [0,2,3,5,16,17,18,24,39]
-	# continuous_list = [5, 16, 17, 18, 24]  
-	continuous_list = [0, 2, 10, 11, 12]
-	# pos_label = ' 50000+.'
-	# neg_label = ' - 50000.'
-	pos_label = ' >50K'
-	neg_label = ' <=50K'
+	continuous_list = [5, 16, 17, 18, 24]  
+	# continuous_list = [0, 2, 10, 11, 12]
+	pos_label = ' 50000+.'
+	neg_label = ' - 50000.'
+	# pos_label = ' >50K'
+	# neg_label = ' <=50K'
 	pos_data = copy.deepcopy(data)	# " 50000+."
 	neg_data = copy.deepcopy(data)	# " - 50000."
 	with open(fileName, 'r') as csvFile:
@@ -96,12 +96,29 @@ def train(fileName, data):
 
 	for i in range(len(pos_data)-1):
 		for k in pos_data[i].keys():
+			if k == "avg":
+				continue
 			pos_data[i][k] = (float(pos_data[i][k])+1)/(pos_data[-1][pos_label]+2)
 			neg_data[i][k] = (float(neg_data[i][k])+1)/(neg_data[-1][neg_label]+2)
 
 	total = pos_data[-1][pos_label] + neg_data[-1][neg_label]
 	pos_data[-1][pos_label] = float(pos_data[-1][pos_label])/total
 	neg_data[-1][neg_label] = float(neg_data[-1][neg_label])/total
+
+	# for i in range(len(data)):
+	# 	print str(i)
+	# 	for k in pos_data[i].keys():
+	# 		print k,
+	# 		print pos_data[i][k]
+	# 	raw_input()
+
+	# for i in range(len(data)):
+	# 	print str(i)
+	# 	for k in neg_data[i].keys():
+	# 		print k,
+	# 		print neg_data[i][k]
+	# 	raw_input()
+
 	return pos_data, neg_data
 
 def test(fileName, pos_data, neg_data, m):
@@ -109,12 +126,12 @@ def test(fileName, pos_data, neg_data, m):
 	Description: By given testing data features, and test file name, predict the labels.
 	'''
 	# continuous_list = [0,2,3,5,16,17,18,24,39]
-	# continuous_list = [5, 16, 17, 18, 24] 
-	continuous_list = [0, 2, 10, 11, 12]
-	# pos_label = ' 50000+.'
-	# neg_label = ' - 50000.'
-	pos_label = ' >50K.'
-	neg_label = ' <=50K.'
+	continuous_list = [5, 16, 17, 18, 24] 
+	# continuous_list = [0, 2, 10, 11, 12]
+	pos_label = ' 50000+.'
+	neg_label = ' - 50000.'
+	# pos_label = ' >50K.'
+	# neg_label = ' <=50K.'
 
 	y = zeros(m)
 	prob_y_pos = ones(m)
@@ -139,7 +156,9 @@ def test(fileName, pos_data, neg_data, m):
 					prob_y_pos[count] *= pos_data[i][row[i]]
 					prob_y_neg[count] *= neg_data[i][row[i]]
 
-	y = (prob_y_pos * pos_data[-1][pos_label.strip('.')]) / (prob_y_pos * pos_data[-1][pos_label.strip('.')] + prob_y_neg * neg_data[-1][neg_label.strip('.')])
+	# y = (prob_y_pos * pos_data[-1][pos_label.strip('.')]) / (prob_y_pos * pos_data[-1][pos_label.strip('.')] + prob_y_neg * neg_data[-1][neg_label.strip('.')])
+
+	y = (prob_y_pos * pos_data[-1][pos_label]) / (prob_y_pos * pos_data[-1][pos_label] + prob_y_neg * neg_data[-1][neg_label])
 
 	pos_index = (y>=0.5)
 	neg_index = (y<0.5)
@@ -170,11 +189,11 @@ def main():
 				2) https://archive.ics.uci.edu/ml/datasets/Census+Income
 
 	'''
-	# trainFile = '../../data/census-income/census-income.data'
-	# testFile = '../../data/census-income/census-income.test'
+	trainFile = '../../data/census-income/census-income.data'
+	testFile = '../../data/census-income/census-income.test'
 
-	trainFile = '../../data/census-income/adult.data'
-	testFile = '../../data/census-income/adult.test'
+	# trainFile = '../../data/census-income/adult.data'
+	# testFile = '../../data/census-income/adult.test'
 
 	print "loading ..."
 	trainSet, dump = load(trainFile)
