@@ -25,3 +25,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 
 * Support Vector Machine
 	- [Sequential minimal optimization(SMO)](./code/SVM/SVM.py)
+
+
+#### 2. Unsupervised Learning
+* [Principal Component Analysis (PCA)](./notes/PCA/)
