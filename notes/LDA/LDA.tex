@@ -5,6 +5,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage[colorinlistoftodos]{todonotes}
 
 \title{Fisher Linear Discriminant Analysis}
@@ -126,6 +127,15 @@ For now, the problem has been solved and we just want to get the direction of th
 $$
 	\theta^{\ast}  \propto S^{-1}_W(u_2 - u_1)
 $$
-This is known as Fisher's linear discriminant(1936), although it is not a discriminant but rather a specific choice of direction for the projection of the data down to one dimension. 
+This is known as Fisher's linear discriminant(1936), although it is not a discriminant but rather a specific choice of direction for the projection of the data down to one dimension, which is $y = \theta^{\ast T}X$. 
 
+
+\section{References}
+\begin{enumerate}
+\item L10: Linear discriminants analysis [\url{http://research.cs.tamu.edu/prism/lectures/pr/pr\_l10.pdf}] 
+
+\item LDA-linear discriminant analysis [\url{http://webdancer.is-programmer.com/posts/37867.html}]
+
+\item Nonlinear Dimensionality Reduction Methods for Use with Automatic Speech Recognition By Stephen A. Zahorian and Hongbing Hu	
+\end{enumerate}
 \end{document}
