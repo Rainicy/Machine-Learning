@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Machine-learning : ">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Machine-learning</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/Rainicy/Machine-Learning">View on GitHub</a>
+
+          <h1 id="project_title">Machine-learning</h1>
+          <h2 id="project_tagline"></h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/Rainicy/Machine-Learning/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/Rainicy/Machine-Learning/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="machine-learning" class="anchor" href="#machine-learning"><span class="octicon octicon-link"></span></a>Machine-Learning</h1>
+
+<p>This is the study notes on <a href="http://cs229.stanford.edu/">Machine Learning class(cs229) in Stanford</a>. I also refer the materials from the class <a href="http://www.ccs.neu.edu/home/vip/teach/MLcourse/">CS6140 in Northeastern University</a> to help me implement algorithms.</p>
+
+<h2>
+<a name="algorithms" class="anchor" href="#algorithms"><span class="octicon octicon-link"></span></a>Algorithms</h2>
+
+<h4>
+<a name="1-supervised-learning" class="anchor" href="#1-supervised-learning"><span class="octicon octicon-link"></span></a>1. Supervised Learning</h4>
+
+<ul>
+<li>
+<p>Naive Bayes</p>
+
+<ul>
+<li>
+<a href="./code/naiveBayes/NaiveBayes.py">Two-class NB with/without Missing Features</a>(<a href="http://archive.ics.uci.edu/ml/datasets/Spambase">data: spambase</a>)</li>
+<li>
+<a href="./code/naiveBayes/censusNaiveBayes.py">More-class NB with Missing Features</a>(<a href="https://archive.ics.uci.edu/ml/datasets/Census-Income+%28KDD%29">data: censusIncome</a>)</li>
+</ul>
+</li>
+<li>
+<p>Linear Regression (<a href="http://archive.ics.uci.edu/ml/datasets/Spambase">data: spambase</a>)</p>
+
+<ul>
+<li>
+<a href="./code/gradDescent/LinearBatchGD.py">Linear Batch Gradient Descent</a> (Regularized &amp; Nomal)</li>
+<li><a href="./code/gradDescent/LinearStochasticGD.py">Linear Stochastic Gradient Descent</a></li>
+<li>
+<a href="./code/normalEquations/normEquations.py">Linear Normal Equations</a> (Regularized &amp; Nomal)</li>
+<li>
+<a href="./code/locallyWeighted/lwr.py">Locally Weighted Linear Regression</a> (<a href="http://www.manning.com/pharrington/">Ref:  Chapter 8</a>)</li>
+</ul>
+</li>
+<li>
+<p>Logistic Regression (<a href="http://archive.ics.uci.edu/ml/datasets/Spambase">data: spambase</a>)</p>
+
+<ul>
+<li>
+<a href="./code/gradDescent/LogisticBatchGD.py">Logistic Batch Gradient Descent</a> (Regularized &amp; Nomal)</li>
+<li><a href="./code/gradDescent/LogisticStochasticGD.py">Logistic Stochastic Gradient Descent</a></li>
+<li>
+<a href="./code/gradDescent/SmoothLogisticStochasticGD.py">Smooth Stochastic Gradient Descent</a> (<a href="https://github.com/pbharrin/machinelearninginaction/blob/master/Ch05/logRegres.py">Ref: (stocGradAscent1)</a>)</li>
+<li>
+<a href="./code/newtonRaphson/newton.py">Newton-Raphson</a>(<a href="http://sites.stat.psu.edu/%7Ejiali/course/stat597e/notes2/logit.pdf">Ref: Logistic Regression by Jia Li</a>)</li>
+</ul>
+</li>
+<li><p><a href="./code/perceptron/perceptron.py">Perceptron Algorithm</a> (<a href="http://archive.ics.uci.edu/ml/datasets/Spambase">data: spambase</a>)</p></li>
+<li>
+<p>Support Vector Machine</p>
+
+<ul>
+<li><a href="./code/SVM/SVM.py">Sequential minimal optimization(SMO)</a></li>
+</ul>
+</li>
+</ul><h4>
+<a name="2-unsupervised-learning" class="anchor" href="#2-unsupervised-learning"><span class="octicon octicon-link"></span></a>2. Unsupervised Learning</h4>
+
+<ul>
+<li><a href="./notes/PCA/">Principal Component Analysis (PCA)</a></li>
+</ul>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Machine-learning maintained by <a href="https://github.com/Rainicy">Rainicy</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
