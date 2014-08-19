@@ -129,6 +129,67 @@ $$
 $$
 This is known as Fisher's linear discriminant(1936), although it is not a discriminant but rather a specific choice of direction for the projection of the data down to one dimension, which is $y = \theta^{\ast T}X$. 
 
+\subsection{MultiClasses  Problem}
+Based on two classes problem, we can see that the fisher's LDA generalizes gracefully for multiple classes problem. Assume we still have a set of D-dimensional samples $X = \{x^{(1)}, x^{(2)}, ... , x^{(m)} \}$, and there are totally $C$ classes. Instead of one projection $y$, mentioned above, we now will seek $(C-1)$ projections $[y_1, y_2, \dots y_{C-1}]$ by means of $(C-1)$ projection vectors $\theta_i$ arranged by columns into a projection matrix $\Theta = [\theta_1 | \theta_2 | \dots | \theta_{C-1}]$, where: 
+$$
+	y_i  = \theta_i^{T}X 
+	\implies y = \Theta^T X
+$$
+\subsubsection{Derivation}
+First we will use the scatters in space-x as following:
+\begin{itemize}
+	\item Within-class scatter matrix:
+	$$
+	S_W = \sum_{i=1}^{C}S_i \quad \text{where} \quad S_i = \sum_{i \in C_i}(x^{(i) - u_i})(x^{(i)} - u_i)^T \: \text{and} \: u_i = \frac{1}{N_i} \sum_{i \in C_i} x^{(i)}
+	$$
+	\item Between-class scatter matrix:
+	$$
+	S_B = \sum_{i=1}^{C}N_i (u_i - u)(u_i - u)^T \quad \text{where} \quad u = \frac{1}{m}\sum_{i=1}^{m}x^{(i)} = \frac{1}{m}\sum_{i=1}^{C}N_i u_i
+	$$
+	\item Total scatter matrix:
+	$$
+	S_T = S_B + S_W
+	$$
+\end{itemize}
+
+Before moving on, let us see a picture for the multi-class example in Figure\ref{fig:multi}:
+
+\begin {figure}
+\centering
+\includegraphics[width=0.7\textwidth]{./images/multi.png}
+\caption{\label{fig:multi} LDA Multi-Class examples}
+\end {figure}
+
+
+Similarly, we define the mean vector and scatter matrices for the projected samples as:
+\begin{itemize}
+	\item $\hat{u}_i = \frac{1}{N_i} \sum_{i \in C_i} y^{(i)}$ 
+	\item $\hat{u} = \frac{1}{N} \sum_{i=1}^{m}y^{(i)}$
+	\item $ \hat{S}_W = \sum_{i=1}^{C}\sum_{y \in C_i} (y - \hat{u}_i)(y - \hat{u}_i)^T $
+	\item $\hat{S}_B = \sum_{i=1}^{C} N_i (\hat{u}_i - \hat{u})(\hat{u}_i - \hat{u})^T$
+\end{itemize}
+From our derivation for the two-class problem, we can get:
+\begin{align}
+	\hat{S}_W = \Theta^T S_W \Theta \\
+	\hat{S}_B =  \Theta^T S_B \Theta
+\end{align}
+Recall that we are looking for a projection that maximizes the ratio of between-class to within-class scatter. Since the projection is no longer a scalar (it has $C-1$ dimensions), we use the determinant of the scatter matrices to obtain a scalar objective function:
+$$
+	J(W) = \frac{|\hat{S}_B|}{|\hat{S}_W|} = \frac{|\Theta^T S_B \Theta|}{|\Theta^T S_W \Theta|}
+$$
+And now, our job is to seek the projection matrix $\Theta^{\ast} $that maximize this ratio. We will not give the derivation process. But we know that the optimal projection matrix $\Theta^{\ast}$ is the one whose columns are the eigenvectors corresponding to the largest eigenvalues of the following generalized eigenvalue problem:
+\begin{align*}
+	\Theta^{\ast} &= [\theta_{1}^{\ast} | \theta_{2}^{\ast} | \dots | \theta_{C-1}^{\ast}] \\
+	&= \text{argmax} \frac{|\Theta^T S_B \Theta|}{|\Theta^T S_W \Theta|}
+\end{align*}
+$$
+	\implies (S_B - \lambda_i S_W)\theta_{i}^{\ast} = 0
+$$
+Thus, if $S_W$ is a non-singular matrix, and can be inverted, then the Fisher's criterion is maximized when the projection matrix $\Theta^{\ast}$ is composed of the eigenvectors of:
+$$
+	S^{-1}_WS_B
+$$
+Noticed that, there will be at most $C-1$ eigenvectors with non-zero real corresponding eigenvalues $\lambda_i$. This is because $S_B$ is of rank $(C-1)$ or less. So we can see that LDA can represent a massive reduction in the dimensionality of the problem. In face recognition for example there may be several thousand variables, but only a few hundred classes. 
 
 \section{References}
 \begin{enumerate}
@@ -136,6 +197,8 @@ This is known as Fisher's linear discriminant(1936), although it is not a discri
 
 \item LDA-linear discriminant analysis [\url{http://webdancer.is-programmer.com/posts/37867.html}]
 
-\item Nonlinear Dimensionality Reduction Methods for Use with Automatic Speech Recognition By Stephen A. Zahorian and Hongbing Hu	
+\item Lecture 16: Linear Discriminant Analysis [\url{http://www.doc.ic.ac.uk/\~dfg/ProbabilisticInference/IDAPILecture16.pdf}]
+
+\item Nonlinear Dimensionality Reduction Methods for Use with Automatic Speech Recognition By Stephen A. Zahorian and Hongbing Hu
 \end{enumerate}
 \end{document}
