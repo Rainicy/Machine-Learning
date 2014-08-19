@@ -28,5 +28,5 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 
 
 #### 2. Unsupervised Learning
-* [Principal Component Analysis (PCA)](./notes/PCA/)
-* [Linear Discriminant Analysis (LDA)](http://rainicy.github.io/docs/LDA.pdf)
+* [Principal Component Analysis (PCA)](./notes/PCA/) [PDF](http://rainicy.github.io/docs/PCA.pdf)
+* [Linear Discriminant Analysis (LDA)](./notes/LDA/) [PDF](http://rainicy.github.io/docs/LDA.pdf)
