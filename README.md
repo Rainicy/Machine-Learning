@@ -30,3 +30,4 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 #### 2. Unsupervised Learning
 * Principal Component Analysis (PCA) ----- [Note in [*Latex*](./notes/PCA/) or [*PDF*](http://rainicy.github.io/docs/PCA.pdf)]
 * Linear Discriminant Analysis (LDA) ----- [Note in [*Latex*](./notes/LDA/) or [*PDF*](http://rainicy.github.io/docs/LDA.pdf)]
+* Support Vector Machine (SVM) ----- [Note in [*Latex*](./notes/SVM/)]
