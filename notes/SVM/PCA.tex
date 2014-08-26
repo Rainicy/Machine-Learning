@@ -1,0 +1,95 @@
+\documentclass[a4paper]{article}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+
+\title{Support Vector Machine}
+
+\author{Bingyu Wang}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+\section{What's SVM}
+Give general idea about SVM and introduce the goal of this notes, what kind of problems and knowledge will be covered by this node. \\ \\
+Define one single SVM model for two labels classification, which label $y \in \{-1, 1\}$ , the classifier will use parameters $w, b$, and write the classifier as 
+$$
+h_{w,b}(x) = g(w^T x + b)
+$$
+
+\section{Margins}
+\subsection{Why Margins}
+Why we choose margins to start our SVM topic? This section will give the intuitions about margins and about the ``confidence" of our predictions. 
+\subsection{Functional and Geometric Margins}
+Define the functional margins, which can represent a confident and a correct prediction. The larger functional margins, the classifier better. However, by scaling $w, b$, we can make the functional margin arbitrarily large without really changing anything meaningful. \\ \\
+Then introduce the geometric margins and give it definition as:
+$$
+	\gamma = \min_{i=1,\dots,m} \gamma^{(i)} 
+	\quad \text{where} \quad  \gamma^{(i)} = y^{(i)}((\frac{w}{||w||})^T x^{(i)} + \frac{b}{||w||})
+$$
+
+\section{The Optimal Margin Classifier}
+Optimization problem:
+\begin{align*}
+&\quad  \max_{\gamma, w, b} \gamma \\
+&\quad  \text{s.t.} \quad  y^{(i)}(w^Tx^{(i)} + b) \geq \gamma, \quad i = 1, \dots, m \\
+&\quad   \quad \quad ||w|| = 1
+\end{align*}
+\\
+Simplify this problem to:
+\begin{align}
+&\quad \min_{\gamma, w, b} \frac{1}{2} ||w||^2 
+\quad \text{s.t.} \quad y^{(i)}(w^T x^{(i)} + b) \geq 1, \quad i = 1, \dots, m
+\end{align}
+\\
+We can use Quadratic Programming(QP) to solve this problem. But we will try to use Lagrange duality to solve this problem, which may allow us use kernels and is also more efficient. 
+
+\section{Lagrange Duality}
+\subsection{Lagrange}
+Lagrange multipliers to solve the problem of the following form:
+\begin{align*}
+&\quad \min_{w} f(w) \\
+&\quad \text{s.t.} \quad  h_{i}(w) = 0, \quad i = 1, \dots,l
+\end{align*}
+
+\subsection{Primal Problem}
+
+\subsection{Dual Problem}
+
+\subsection{Karush-Kuhn-Tucker}
+Once the Primal problem and Dual problem equal to each other, the parameters will meet the KKT conditions. We just introduce the five conditions as following:
+\begin{align}
+	\frac{\partial}{\partial w_i} \mathcal{L}(w^\ast, \alpha ^ \ast, \beta^\ast) = 0, \quad i = 1, \dots, n \\
+	\frac{\partial}{\partial \beta_i} \mathcal{L}(w^\ast, \alpha ^ \ast, \beta^\ast) = 0, \quad i = 1, \dots, l \\
+	\alpha_{i}^\ast g_i(w^\ast) = 0, \quad i = 1, \dots, k \\
+	g_i(w^\ast) \leq 0, \quad i = 1, \dots, k \\
+	\alpha^\ast \geq 0, \quad i = 1, \dots, k 
+\end{align}
+
+\section{Optimal Margin Classifiers}
+Go back to our problem defined in (1), which is primal problem. Then use the above knowledge to derive the problem and then get the dual optimization problem\textbf{(I will introduce the derivation processing details here)}.
+\begin{align*}
+&\max_\alpha W(\alpha) = \sum_{i=1}^{m} \alpha_i - \frac{1}{2} \sum_{i,j=1}^{m} y^{(i)}y^{(j)} \alpha_i \alpha_j <x^{(i)}, x^{(j)}>. \\
+&\text{s.t.} \quad \alpha_i \geq 0, \quad, i = 1, \dots, m \\
+&\quad \quad \quad \sum_{i=1}^{m} \alpha_i y^{(i)} = 0. 
+\end{align*}
+\\
+Now we can easily to solve this problem. But we have two new problems: \\
+1) What if the data cannot be separated in low-dimensions? We need \textbf{Kernel}, which maps features to higher-dimensions to be easier separated.  \\
+2) What if there existing some noise data points between the support vector?  We need Regularization, re-define the problem (1) by using $l_1$ \textbf{regularization}. 
+
+\section{Kernels}
+This section will introduce the Kernels. Why we need kernels, and how kernel can solve the non-separable data. 
+
+\section{Regularization}
+This section will add $l_1$ \text{regularization} to our original model, and to do better about noise and non-separable data. (\textbf{Here the derivation processing is similar to previous derivation steps. So here I won't give the details about the derivation. But I can post the details online and giving them a link, if they are interested in the derivation.})
+
+\section{SMO Algorithm}
+After getting the final dual optimization problem, I will introduce the SMO algorithms to solve this problem. And give the derive processing and algorithms. 
+
+\end{document}
