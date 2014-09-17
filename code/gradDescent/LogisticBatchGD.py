@@ -56,7 +56,8 @@ def LogisticBatchGD(X, y, options):
 	rmse_ = inf
 
 	# stop looping condition
-	while abs(rmse - rmse_) > threshold:
+	# while abs(rmse - rmse_) > threshold:
+	while loop <= 1000:
 		loop += 1
 		if loop == 1:
 			rmse_ = inf
@@ -80,4 +81,14 @@ def LogisticBatchGD(X, y, options):
 			theta[0] += alpha * (X.T[0] * (y-hypothese))
 			theta[1:] += alpha * (X.T[1:] * (y-hypothese) - options['lambda'] * theta[1:])
 
+	
+	with open('parameters'+str(options['lambda']), 'w') as file:
+		flatTheta = squeeze(asarray(theta))
+		meanMain = mean(abs(flatTheta[:58]))
+		meanRest = mean(abs(flatTheta[58:]))
+		file.writelines("Features(1~58) Mean" + '\t' + str(meanMain) + '\n')
+		file.writelines("Features(Polluted) Mean" + '\t' + str(meanRest) + '\n')
+		for i in range(n):
+			file.writelines(str(i) + '\t' + str(theta[i]) + '\n')
+		file.close()
 	return theta

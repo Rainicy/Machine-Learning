@@ -21,7 +21,7 @@ def main():
 
 	yHat = np.zeros(len(yArr))
 	for i in range(len(yArr)):
-		yHat[i] = lwr(xArr, yArr, xArr[i], 0.003)
+		yHat[i] = lwr(xArr, yArr, xArr[i], 0.01)
 	# yHat = lwlrTest(xArr, xArr, yArr, 0.003)
 
 	xMat=mat(xArr)

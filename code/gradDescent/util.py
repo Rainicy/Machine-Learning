@@ -6,6 +6,23 @@ Created May 27, 2014
 
 import numpy as np
 
+def loadData(folder):
+	'''
+	Description: This function is for loading the polled spam data from the given
+				folder.
+	'''
+	trainX = np.loadtxt(folder + 'train_feature.txt', delimiter=' ')
+	trainY = np.loadtxt(folder + 'train_label.txt', delimiter=' ')
+	testX = np.loadtxt(folder + 'test_feature.txt', delimiter=' ')
+	testY = np.loadtxt(folder + 'test_label.txt', delimiter=' ')
+	## get mean and std values from training set
+	mean = np.mean(trainX, axis = 0)
+	std = np.std(trainX, axis = 0)
+	trainX = (trainX - mean) / std
+	testX = (testX - mean) / std
+	
+	return trainX, trainY, testX, testY
+
 def initialData(data):
 	'''
 	Description: This function split the datta to training and testing set and 

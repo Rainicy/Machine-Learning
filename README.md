@@ -26,6 +26,9 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 * Support Vector Machine
 	- [Sequential minimal optimization(SMO)](./code/SVM/SVM.py)
 
+* Classification Tree (data: spambase)
+	- [Decision Tree](./code/tree/decisionTree.py)
+
 
 #### 2. Unsupervised Learning
 * Principal Component Analysis (PCA) ----- [Note in [*Latex*](./notes/PCA/) or [*PDF*](http://rainicy.github.io/docs/PCA.pdf)]
