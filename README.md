@@ -27,7 +27,7 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 	- [Sequential minimal optimization(SMO)](./code/SVM/SVM.py)
 
 * Classification Tree (data: spambase)
-	- [Decision Tree](./code/tree/decisionTree.py)
+	- [Decision Tree](./code/tree/DecisionTree.py)
 
 
 #### 2. Unsupervised Learning
