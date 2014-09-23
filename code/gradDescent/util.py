@@ -23,7 +23,7 @@ def loadData(folder):
 	
 	return trainX, trainY, testX, testY
 
-def initialData(data):
+def initialData(data,i):
 	'''
 	Description: This function split the datta to training and testing set and 
 				also split the features and labels. The last column is the label.
@@ -41,16 +41,16 @@ def initialData(data):
 	'''
 	# split training data and testing data
 	# index end with digit 1 is the testing set, others are training set
-	testIndex = np.arange(1, data.shape[0], 10)
+	testIndex = np.arange(i, data.shape[0], 10)
 	testData = data[testIndex]
 	trainData = np.delete(data, testIndex, 0)
 
 	# shffule the training data
-	np.random.shuffle(trainData)
+	# np.random.shuffle(trainData)
 
 	# get mean and std values
-	mean = np.mean(data[:, :-1], axis = 0)
-	std = np.std(data[:, :-1], axis = 0)
+	mean = np.mean(trainData[:, :-1], axis = 0)
+	std = np.std(trainData[:, :-1], axis = 0)
 	# z-socre the features [(x-mean)/std]
 	trainX = trainData[:, :-1]
 	trainY = trainData[:, -1]
@@ -58,6 +58,13 @@ def initialData(data):
 	testX = testData[:, :-1]
 	testY = testData[:, -1]
 	testX = (testX - mean) /std
+
+	## flip first 400 labels in training
+	# for i in range(400):
+	# 	if trainY[i] == 0:
+	# 		trainY[i] = 1
+	# 	else:
+	# 		trainY[i] = 0
 
 	# add one column to the first column, which are all 1s
 	trainX = np.insert(trainX, 0, 1, axis = 1)

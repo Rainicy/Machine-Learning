@@ -67,7 +67,7 @@ def LogisticBatchGD(X, y, options):
 		# hypothese = logistic(theta.T * X)
 		hypothese = logistic(X * theta)
 		rmse = RMSE(hypothese, y)
-		print 'Iteration: %d | RMSE: %f' % (loop, rmse)
+		# print 'Iteration: %d | RMSE: %f' % (loop, rmse)
 
 		# updating parameters
 		### 1) Nomal update:
@@ -77,18 +77,21 @@ def LogisticBatchGD(X, y, options):
 		####	theta_j = theta_j + alpha * [(y-hypo)*X - lambda*theta_j]. (for j = 1 to n)
 		if not ifRegularized:
 			theta += alpha * (X.T * (y - hypothese))
+			## least mean squares
+			# theta += alpha * (X.T * (y - hypothese) * hypothese.T * (1-hypothese))
 		else:
 			theta[0] += alpha * (X.T[0] * (y-hypothese))
 			theta[1:] += alpha * (X.T[1:] * (y-hypothese) - options['lambda'] * theta[1:])
 
 	
-	with open('parameters'+str(options['lambda']), 'w') as file:
-		flatTheta = squeeze(asarray(theta))
-		meanMain = mean(abs(flatTheta[:58]))
-		meanRest = mean(abs(flatTheta[58:]))
-		file.writelines("Features(1~58) Mean" + '\t' + str(meanMain) + '\n')
-		file.writelines("Features(Polluted) Mean" + '\t' + str(meanRest) + '\n')
-		for i in range(n):
-			file.writelines(str(i) + '\t' + str(theta[i]) + '\n')
-		file.close()
-	return theta
+	# with open('parameters'+str(options['lambda']), 'w') as file:
+	# 	flatTheta = squeeze(asarray(theta))
+	# 	meanMain = mean(abs(flatTheta[:58]))
+	# 	meanRest = mean(abs(flatTheta[58:]))
+	# 	file.writelines("Features(1~58) Mean" + '\t' + str(meanMain) + '\n')
+	# 	file.writelines("Features(Polluted) Mean" + '\t' + str(meanRest) + '\n')
+	# 	for i in range(n):
+	# 		file.writelines(str(i) + '\t' + str(theta[i]) + '\n')
+	# 	file.close()
+	print 'total loop: {}'.format(loop)
+	return theta, loop

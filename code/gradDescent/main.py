@@ -14,17 +14,17 @@ from LogisticStochasticGD import LogisticStochasticGD
 from SmoothLogisticStochasticGD import SmoothLogisticStochasticGD
 
 
-def main():
+def main(i):
 
 	# For testing
 	np.set_printoptions(threshold='nan')
 
 	# Part 1: Prepare for the data for training and testing
-	# data = np.loadtxt('../../data/spambase/spambase.data', delimiter=',')
-	# trainX, trainY, testX, testY = initialData(data)
+	data = np.loadtxt('../../data/spambase/spambase.data', delimiter=',')
+	trainX, trainY, testX, testY = initialData(data,i)
 
 	# Load the spam_polluted data.
-	trainX, trainY, testX, testY = loadData('../../data/spambase/spam_polluted/')
+	# trainX, trainY, testX, testY = loadData('../../data/spambase/spam_polluted/')
 
 
 	# Part 2: Training the theta model by Batch Gradient Descent
@@ -33,8 +33,8 @@ def main():
 	options = {'alpha': 5e-6, 'threshold': 1e-6, 'regularized': False, 'lambda': 50}
 	# theta = LinearBatchGD(trainX, trainY, options)
 	# theta = LinearStochasticGD(trainX, trainY, options)
-	theta = LogisticBatchGD(trainX, trainY, options)
-	# theta = LogisticStochasticGD(trainX, trainY, options
+	theta, rounds = LogisticBatchGD(trainX, trainY, options)
+	# theta = LogisticStochasticGD(trainX, trainY, options)
 	# theta = SmoothLogisticStochasticGD(trainX, trainY, options)
 
 	# Part 3: Testing data 
@@ -60,5 +60,20 @@ def main():
 	print "Error Rate on training: %f" % trainER
 	print "Error Rate on testing : %f" % testER
 
+	return rounds, trainER, testER
+
 if __name__ == '__main__':
-	main()
+	sum_rounds = 0
+	sum_train = 0 
+	sum_test = 0
+	for i in range(10):
+		rounds, train, test = main(i)
+		sum_rounds += rounds
+		sum_train += train
+		sum_test += test
+
+	print sum_rounds
+	print sum_train
+	print sum_test
+
+

@@ -56,6 +56,7 @@ def LogisticStochasticGD(X, y, options):
 		# updating parameters by each sample
 		for i in range(0, m):
 			h = logistic(X[i] * theta)
-			theta += alpha * (X[i].T * (y[i] - h))
+			# theta += alpha * (X[i].T * (y[i] - h))
+			theta += alpha * (X[i].T * (y[i] - h) * h.T * (1-h))
 
 	return theta
