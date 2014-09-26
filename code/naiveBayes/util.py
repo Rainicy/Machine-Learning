@@ -127,3 +127,43 @@ def initialData(data):
 	testY = testData[:, -1]
 
 	return trainX, trainY, testX, testY
+
+def initialGammaData(data, i):
+	'''
+	Description: This function split the datta to training and testing set and 
+				also split the features and labels. The last column is the label.
+				Besides, we need shuffle the training data order.
+				Partition the data follow the instruction on website:
+				http://www.ccs.neu.edu/home/jaa/CS6140.13F/Homeworks/hw.03.html
+
+	@param:
+		data: The whole dataset.
+		i: index of split (0~9)
+	@return:
+		trainX: training data features
+		trainY: training data label
+		testX: test data features
+		testY: test data features
+	'''
+	# split training data and testing data
+	# index end with digit 1 is the testing set, others are training set
+	testIndex = np.arange(i, data.shape[0], 10)
+	testData = data[testIndex]
+	trainData = np.delete(data, testIndex, 0)
+
+	# shffule the training data
+	# np.random.shuffle(trainData)
+
+	# get mean and std values
+	mean = np.mean(trainData[:, :-1], axis = 0)
+	std = np.std(trainData[:, :-1], axis = 0)
+	# z-socre the features [(x-mean)/std]
+	trainX = trainData[:, :-1]
+	trainY = trainData[:, -1]
+	trainX = (trainX - mean) / std
+	testX = testData[:, :-1]
+	testY = testData[:, -1]
+	testX = (testX - mean) /std
+
+	return trainX, trainY, testX, testY
+

@@ -59,13 +59,6 @@ def initialData(data,i):
 	testY = testData[:, -1]
 	testX = (testX - mean) /std
 
-	## flip first 400 labels in training
-	# for i in range(400):
-	# 	if trainY[i] == 0:
-	# 		trainY[i] = 1
-	# 	else:
-	# 		trainY[i] = 0
-
 	# add one column to the first column, which are all 1s
 	trainX = np.insert(trainX, 0, 1, axis = 1)
 	testX = np.insert(testX, 0, 1, axis = 1)

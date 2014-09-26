@@ -70,6 +70,7 @@ def choose_split(data):
                 chosen_left = left_index
                 chosen_right = right_index
 
+
     return chosen_feature, chosen_threshold, chosen_left, chosen_right
 
 

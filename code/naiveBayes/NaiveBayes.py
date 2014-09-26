@@ -6,6 +6,92 @@ Created on July 24, 2014
 
 from numpy import *
 from random import *
+from scipy.stats import gamma
+
+def train_gamma(X, y):
+	'''
+	Description: This is trained by the density of gamma-distributions for each features.
+
+	@params:
+		X: training features
+		y: training y
+	@return:
+		model:
+
+	'''
+	m, n = X.shape
+
+	model = {}
+	## calculate prob of spam and nonspam
+	p_spam = sum(y==1) * 1.0 / m
+	p_nonspam = sum(y==0) * 1.0 / m
+
+	model['p_spam'] = p_spam
+	model['p_nonspam'] = p_nonspam
+
+	index_spam = (y==1)
+	index_nonspam = (y==0)
+	gammas_spam = []
+	gammas_nonspam = []
+
+	for i in range(n):
+		ga = {}
+		x_spam = asarray(X[index_spam, i])
+		a, floc, scale = gamma.fit(x_spam)
+		ga['a'] = a
+		ga['floc'] = floc
+		ga['scale'] = scale
+		gammas_spam.append(ga)
+
+		ga = {}
+		x_nonspam = asarray(X[index_nonspam, i])
+		a, floc, scale = gamma.fit(x_nonspam)
+		ga['a'] = a
+		ga['floc'] = floc
+		ga['scale'] = scale
+		gammas_nonspam.append(ga)
+
+	model['gammas_spam'] = gammas_spam
+	model['gammas_nonspam'] = gammas_nonspam
+
+	return model
+
+def test_gamma(X, model):
+	'''
+	Description: Use the Naive Bayes model to test on the given missing features testing data.
+
+	@params:
+		X: testing features
+		model: gamma models, {'p_spam': float, 'p_nonspam': float, 'gammas': list of gamma}
+	@return 
+		y: predict labels
+	'''
+	m, n = X.shape
+
+	y = zeros(m)
+	prob_spam = ones(m) * model['p_spam']
+	prob_nonspam = ones(m) * model['p_nonspam']
+ 
+	results_spam = empty((m,n))
+	results_nonspam = empty((m,n))
+	for j in range(n):
+		gammas = model['gammas_spam'][j]
+		results_spam[:,j] = gamma.pdf(X[:,j], gammas['a'], loc=gammas['floc'], scale=gammas['scale'])
+		gammas = model['gammas_nonspam'][j]
+		results_nonspam[:, j] = gamma.pdf(X[:,j], gammas['a'], loc=gammas['floc'], scale=gammas['scale'])
+
+	for i in range(m):
+		prob_spam[i] = prod(results_spam[i, :])
+		prob_nonspam[i] = prod(results_nonspam[i, :])
+
+	print prob_spam
+	print prob_nonspam
+	raw_input()
+	index_spam = (prob_spam > prob_nonspam)
+	index_nonspam = (prob_spam <= prob_nonspam)
+	y[index_spam] = 1
+	y[index_nonspam] = 0
+	return y
 
 
 def train(X, y):
@@ -16,7 +102,7 @@ def train(X, y):
 	@params:
 		X: training features
 		y: training labels
-	@return
+	@return:
 		NB_Model: Naive Bayes model, which includes the parameters:
 				  1) Phi_y_1: size is 1 * #features. For the parameter stored y=1, each feature = 1's prob.
 				  2) Phi_y_0: size is 1 * #features. For the parameter stored y=0, each feature = 1's prob.
