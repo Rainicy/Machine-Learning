@@ -142,3 +142,6 @@ def main():
 if __name__ == '__main__':
 	# main()
 	main1()
+
+## how to use: 
+## python --i 'dataset_path' --k 'k-nearest-neighbors' --threshold  'stop threshold'

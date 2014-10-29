@@ -26,6 +26,9 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 * Support Vector Machine
 	- [Sequential minimal optimization(SMO)](./code/SVM/SVM.py)
 
+* Neural Network
+	- [Encode/Decode] (./code/neuralNetwork/neural_network.py)
+
 * Classification Tree (data: spambase)
 	- [Decision Tree](./code/tree/DecisionTree.py)
 

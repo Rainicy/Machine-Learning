@@ -157,3 +157,6 @@ def main():
  
 if __name__ == '__main__':
     main()
+
+## how to use: 
+## python --i 'dataset_path' --n 'number of Gaussian'

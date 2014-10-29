@@ -161,7 +161,8 @@ def main():
 if __name__ == '__main__':
 	main()
 		
-
+## How to use:
+## python --i 'dataset_path' --e 'Eps' --n 'minimum points'
 
 
 
