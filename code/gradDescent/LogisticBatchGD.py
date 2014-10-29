@@ -67,7 +67,7 @@ def LogisticBatchGD(X, y, options):
 		# hypothese = logistic(theta.T * X)
 		hypothese = logistic(X * theta)
 		rmse = RMSE(hypothese, y)
-		# print 'Iteration: %d | RMSE: %f' % (loop, rmse)
+		print 'Iteration: %d | RMSE: %f' % (loop, rmse)
 
 		# updating parameters
 		### 1) Nomal update:

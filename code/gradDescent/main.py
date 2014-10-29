@@ -66,7 +66,7 @@ if __name__ == '__main__':
 	sum_rounds = 0
 	sum_train = 0 
 	sum_test = 0
-	for i in range(10):
+	for i in range(1):
 		rounds, train, test = main(i)
 		sum_rounds += rounds
 		sum_train += train

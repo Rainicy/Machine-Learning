@@ -13,7 +13,9 @@ def main():
 
 	# trainFile = "../../data/spambase/missing_values/{}_percent_missing_train.txt"
 	# testFile = "../../data/spambase/missing_values/{}_percent_missing_test.txt"
-
+	set_printoptions(threshold='nan')
+	Accuracy_train = ones(10)
+	Accuracy_test = ones(10)
 	for i in range(10):
 		print "Working on data with {} testing set".format(i)
 		# Step 1: loading data
@@ -38,7 +40,7 @@ def main():
 		# predict_y = NaiveBayes.test(testX, model)
 		# predict_y = NaiveBayes.test_missing_value(testX, model)
 		##### gammas
-		train_y = NaiveBayes.test_gamma(trainX, model)
+		# train_y = NaiveBayes.test_gamma(trainX, model)
 		test_y = NaiveBayes.test_gamma(testX, model)
 
 		# # # Step 4: Calculate the Accuracy.
@@ -47,10 +49,13 @@ def main():
 		# print "Accuracy on testing : {:.2f}%".format(accuracy*100)
 		# print "....Done...."
 		##### gammas
-		accuracy = sum(train_y == trainY) / float(trainY.size)
-		print "Accuracy on training : {:.2f}%".format(accuracy*100)
-		accuracy = sum(test_y == testY) / float(testY.size)
-		print "Accuracy on test : {:.2f}%".format(accuracy*100)
+		Accuracy_train[i] = sum(train_y == trainY) / float(trainY.size)
+		print "Accuracy on training : {:.2f}%".format(Accuracy_train[i]*100)
+		Accuracy_test[i] = sum(test_y == testY) / float(testY.size)
+		print "Accuracy on test : {:.2f}%".format(Accuracy_test[i]*100)
+
+	print "Total average accuracy on training: {:.2f}%".format(mean(Accuracy_train)*100)
+	print "Total average accuracy on testing: {:.2f}%".format(mean(Accuracy_test)*100)
 
 if __name__ == '__main__':
 	main()

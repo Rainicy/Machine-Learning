@@ -32,6 +32,27 @@ def loadDigitData():
 
 	return train_x, mat(train_y).T, test_x, mat(test_y).T
 
+def loadDigitExtractedData():
+	path = './'
+	train_x = path + 'training_image.txt'
+	train_y = path + 'training_label.txt'
+	test_x = path + 'testing_image.txt'
+	test_y = path + 'testing_label.txt'
+	train_x = genfromtxt(train_x, delimiter=',')
+	train_y = genfromtxt(train_y, delimiter=',')
+	test_x = genfromtxt(test_x, delimiter=',')
+	test_y = genfromtxt(test_y, delimiter=',')
+
+	return train_x, mat(train_y).T, test_x, mat(test_y).T
+
+def loadDigitExtractedTestData():
+	path = './'
+	test_x = path + 'testing_image.txt'
+	test_y = path + 'testing_label.txt'
+	test_x = genfromtxt(test_x, delimiter=',')
+	test_y = genfromtxt(test_y, delimiter=',')
+	return test_x, mat(test_y).T
+
 def loadDigitTestData():
 	'''
 	Description: Loading the digit data from 'digit_rec' folder. 

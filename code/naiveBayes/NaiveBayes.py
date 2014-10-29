@@ -43,6 +43,7 @@ def train_gamma(X, y):
 		ga['scale'] = scale
 		gammas_spam.append(ga)
 
+
 		ga = {}
 		x_nonspam = asarray(X[index_nonspam, i])
 		a, floc, scale = gamma.fit(x_nonspam)
@@ -50,6 +51,7 @@ def train_gamma(X, y):
 		ga['floc'] = floc
 		ga['scale'] = scale
 		gammas_nonspam.append(ga)
+
 
 	model['gammas_spam'] = gammas_spam
 	model['gammas_nonspam'] = gammas_nonspam
@@ -69,24 +71,35 @@ def test_gamma(X, model):
 	m, n = X.shape
 
 	y = zeros(m)
-	prob_spam = ones(m) * model['p_spam']
-	prob_nonspam = ones(m) * model['p_nonspam']
- 
-	results_spam = empty((m,n))
-	results_nonspam = empty((m,n))
+	prob_spam = ones(m) 
+	prob_nonspam = ones(m)
+	
+	results_spam = zeros((m,n))
+	results_nonspam = zeros((m,n))
 	for j in range(n):
 		gammas = model['gammas_spam'][j]
-		results_spam[:,j] = gamma.pdf(X[:,j], gammas['a'], loc=gammas['floc'], scale=gammas['scale'])
+		results_spam[:,j] = gamma.logpdf(X[:,j], gammas['a'], loc=gammas['floc'], scale=gammas['scale'])
+		# print results_spam[:,j]
+		# raw_input()
+		if inf in results_spam[:, j]:
+			print 'inf feature ' + j
+		# print prod(results_spam[:,j])
 		gammas = model['gammas_nonspam'][j]
-		results_nonspam[:, j] = gamma.pdf(X[:,j], gammas['a'], loc=gammas['floc'], scale=gammas['scale'])
+		results_nonspam[:, j] = gamma.logpdf(X[:,j], gammas['a'], loc=gammas['floc'], scale=gammas['scale'])
+		# print prod(results_nonspam[:,j])
+		# raw_input()
 
 	for i in range(m):
-		prob_spam[i] = prod(results_spam[i, :])
-		prob_nonspam[i] = prod(results_nonspam[i, :])
+		prob_spam[i] = sum(results_spam[i, :]) + log(model['p_spam'])
+		prob_nonspam[i] = sum(results_nonspam[i, :]) + log(model['p_nonspam'])
+		print prob_spam[i]
+		raw_input()
+		print prob_nonspam[i]
+		raw_input()
 
-	print prob_spam
-	print prob_nonspam
-	raw_input()
+	# print prob_spam
+	# print prob_nonspam
+	# raw_input()
 	index_spam = (prob_spam > prob_nonspam)
 	index_nonspam = (prob_spam <= prob_nonspam)
 	y[index_spam] = 1
