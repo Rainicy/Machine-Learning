@@ -40,6 +40,8 @@ This is the study notes on [Machine Learning class(cs229) in Stanford](http://cs
 
 * [EM for Mix-Gaussians](./code/em/mixGaussian.py)	([toy dataset](./data/toy/))
 
+#### 3. Study Notes
+
 * Principal Component Analysis (PCA) ----- [Note in [*Latex*](./notes/PCA/) or [*PDF*](http://rainicy.github.io/docs/PCA.pdf)]
 
 * Linear Discriminant Analysis (LDA) ----- [Note in [*Latex*](./notes/LDA/) or [*PDF*](http://rainicy.github.io/docs/LDA.pdf)]

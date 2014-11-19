@@ -15,6 +15,17 @@ def stumpPredict(X, feature, threshold):
 	predictedY[X[:, feature] <= threshold] = -1.0
 	return predictedY
 
+def buildErrors(X, y):
+	'''
+	Description: Given X and y, returns a list of errors for each 
+				 feature and each threshold.
+	'''
+	m, n = shape(X)
+	lists = []
+	for i in range(n):
+		
+
+
 def selectStump(X, y, D, numSteps=10, optimal=True):
 	'''
 	Description: select stump optimal or randomly.
@@ -30,7 +41,7 @@ def selectStump(X, y, D, numSteps=10, optimal=True):
 			minValue = X[:, i].min()
 			maxValue = X[:, i].max()
 			step = (maxValue - minValue) * 1.0 /numSteps
-			for j in range(-1, numSteps+1):
+			for j in range(0, numSteps):
 				threshold = minValue + j * step
 				predictedY = stumpPredict(X, i, threshold)
 				error = mat(ones((m, 1)))
@@ -77,7 +88,6 @@ def trainAdaBoost(X, y, options=None):
 
 	for i in range(maxIterations):
 		stump, error, h_t = selectStump(X, y, D, numSteps, optimal)
-		print error
 		alpha = float(0.5 * log((1.0-error)/error))
 		stump['alpha'] = alpha
 		weakLearners.append(stump)
@@ -87,7 +97,7 @@ def trainAdaBoost(X, y, options=None):
 		H_t += alpha * h_t
 		Error = multiply(sign(H_t) != y, ones((m,1)))
 		errorRate = Error.sum() * 1.0 / m
-		print "Error at round {} : {}".format(i+1, errorRate)
+		print "Round {} - WeightedError {} - ErrorRate{}".format(i+1, float(error), errorRate)
 		# raw_input()
 		if errorRate == 0.0:
 			break
